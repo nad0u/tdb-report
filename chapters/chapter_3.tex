@@ -1,0 +1,112 @@
+%% Chapter 3 - Benchmark
+
+
+\chapter{Benchmark}
+In computer science, a benchmark is the act of running a program that will put the machine under stress situation, in order to measure the performance. 
+Several types of benchmarks exist in order to evaluate the performance of individual componenents of a machine. 
+In the context of this bachelor work, a database benchmark has been run in order to evaluate the performance of OpenStack.
+This section briefly presents the tools and benchmark used.
+
+%%--------------- subsection
+\section{TPC-C benchmark}
+For our experiments, we used the TPC-C benchmark. 
+TPC-C is defined as an \enquote{\textit{on-line transaction processing (OLTP) benchmark}}\footnote{\url{http://www.tpc.org/tpcc}, 14.09.2014} by the Transaction Processing Performance Council (TPC).
+The performance of a given system is measured by simulating an OLTP database environment in which concurrent transactions happen.
+Thus, a typical OLTP application depicting a wholesale supplier is used 
+and only activites or tasks having an impact on resources utilization are considered, as they may affect the performance of the whole system.
+This means that activities requiring small resource utilization and/or appearing with low frequency are completly ignored, 
+letting just the most significant ones (listed in Table \ref{table:tpcc_trans_type_list}) to evaluate the performance.
+To better understand how this benchmark evaluates a system, one must understand how the chosen wholesale supplier is organized.
+In this environment, we have a hierarchie. 
+Beginning at the top, we have the company, which has several warehouses in different places, each one having 100000 items in stock.
+Ten sales districts are distributed around each warehouse.
+Each one of these sales districts serves 3000 clients (or customers).
+The company receives new orders (composed of 5 up to 15 order lines) from clients.
+The latter have also the possibility to consult the status of their orders by contacting the company.
+Among all the order lines, 1\% are for items not in-stock at a given warehouse.
+These items have to be provided by another warehouse.
+Finally, the company has to deal with clients payments, orders processing and stock levels.
+Of course, as the business is growing, new warehouses and everything that comes after will be created.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|m{4cm}|m{9cm}|}
+		\hline
+		\textbf{Transaction type} & \textbf{Description}\\
+		\hline
+		New Order & a enters a new order into the database\\
+		\hline
+		Payment & a updates the customer balance's\\
+		\hline
+		Order Status & checks the status of an order\\
+		\hline
+		Delivery & processes batch of new orders not yet delivered\\
+		\hline
+		Stock Level & determines the number of sold items that have a low stock level (depending on threshold)\\
+		\hline
+	\end{tabular}
+	\caption{TPC-C Transaction Types}
+	\label{table:tpcc_trans_type_list}
+\end{table}
+
+From this system description, one can see that it has to deal with a lot of transactions, especially if the number of warehouses increases.
+The corresponding TPC-C database, consisting of nine tables, is depicted by the entity-relationship diagram shown in Figure \ref{fig:tpcc_erd}.
+One can see that the number of warehouses is the scale factor of this database, meaning that the more warehouses there are, bigger the size of the database will be.
+Indeed, the number of rows in each table is a function of the given number of warehouses.
+The table Item is an exception and has a fixed number of rows.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{figures/tpcc_erd.png}
+	\caption{TPC-C database ER diagram \cite[p. 11]{tpcc10}}
+	\label{fig:tpcc_erd}
+\end{figure}
+
+During a benchmark run, simulated users are interacting with the system by issues different transactions, which are then processed by TPC-C.
+It returns the performance in tpmC (or transaction per minute C), which corresponds to the average number of new orders the system is processing per minute.
+It is then straighforward to compared the performance of different systems.
+
+
+
+%%--------------- subsection
+\section{OLTP-Bench}
+OLTP-Bench\footnote{available on Github: \url{https://github.com/oltpbenchmark/oltpbench}} is an open source project which aims to facilitate benchmarking by providing different benchmarks ready to use. 
+Table \ref{table:oltpbench_list} summarizes the different benchmarks supported by this tool, which includes TPC-C benchmark presented in the previous section.
+OLTP-Bench is a command line tool which is easy to use in order to populate a database and to run a benchmark.
+Moreover, it allows to easily change parameters thanks to xml-based configuration files.
+This configuration requires only few things, like setting the connection to database, the scale factor (which corresponds to the number of warehouse discussed in the previous section), the number of terminals (which corresponds to the number of simulated users, who will interact with the system (i.e. do business transactions)), the workload and the duration of the benchmark.
+An example of such configuration is shown later in Listing \ref{lst:lst_oltp_config}.
+
+OLTP-Bench returns a throughput expressed in req/s (or request per second), in contrast to tmpC seen with TPC-C specification.
+This value is used to compare the performance between the different machine.
+
+OLTP-Bench will discussed in a bit more details in Section \ref{sec:softwares} dedicated to the different softwares used for the experiments.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|m{3.5cm}|m{3.5cm}|m{6cm}|}
+		\hline
+		\textbf{Class} & \textbf{Benchmark} & \textbf{Application domain}\\
+		\hline
+		\multirow{7}{*}{Transactional} & AuctionMark & On-line Auctions\\
+		 & CH-benCHmark & Mixture of OLTP and OLAP\\
+		 & SEATS & On-line Airline Ticketing\\
+		 & SmallBank & Banking System\\
+		 & TATP & Caller Location App\\
+		 & TPC-C & Order Processing\\
+		 & Voter & Talent Show Voting\\
+		\hline
+		\multirow{4}{*}{Web-Oriented} & Epinions & Social Networking\\
+		 & LinkBench & Social Networking\\
+		 & Twitter & Social Networking\\
+		 & Wikipedia & On-line Encyclopedia\\
+		\hline
+		\multirow{4}{*}{Feature Testing} & ResourceStresser & Isolated Resource Stresser\\
+		 & YCSB & Scalable Key-value Store\\
+		 & JPAB & Object-Relational Mapping\\
+		 & SIBench & Transactional Isolation\\
+		\hline
+	\end{tabular}
+	\caption{Set of benchmarks supported in OLTP-Bench \cite{difallah14}}
+	\label{table:oltpbench_list}
+\end{table}

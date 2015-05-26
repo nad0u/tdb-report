@@ -1,0 +1,84 @@
+%% Chapter 1 - Cloud Computing
+
+
+\chapter{Cloud Computing}
+Since several years, the term \textit{Cloud Computing} is more and more used, but many people don't know exactly what this term stands for. 
+In fact, we all use cloud computing since several years without actually knowing it. One famous example is the webmail, a service which gives the possibility to send and receive e-mails.
+As already stated before, \textit{Cloud Computing} offers the possibility to users to do something (i.e. writing a text document) on the web without having the need to have any software installed on its own computer, everything being done on a remote server. 
+This is exactly what is being offerd to the users by webmail services.
+
+When talking about the \textit{cloud}, one must make the difference between private, hybrid and public clouds. 
+A private cloud allows to have the advantages of the cloud, but it's restrained to the organization, menaning that it's not exposed to the Internet and that all the hardware ressources (i.e. servers) reside in the organization. 
+So the services are accesible only when the employees are connected to the internal network of the organization. 
+On the other hand, a public cloud is exposed to the Internet, meaning that we can access it from everywhere as long as we have an Internet connection. 
+A good example can be the service Dropbox, which offers the possibility to store data in the cloud. 
+In the middle, there is the hybrid cloud, which is a mix of both previous types of clouds.
+
+Besides the three types presented, there exists several cloud models. The three most important ones are IaaS, PaaS and SaaS, which will be briefly presented in the next sections. 
+These proposed models are not always free, or in most cases they are free for a restricted usage. 
+For intensive usage, the client (in general the company) must pay a monthly fee to the one provisioning the service.
+
+
+
+
+
+%%--------------- subsection
+\section{SaaS}
+SaaS stands for \textit{Software as a Service} and means that a remotely accessible software is provided to the users. 
+This kind of software is also known as a hosted service. 
+The software is accessible through Internet and the Web, so the user doesn't need to install anything on its own machine. 
+Typical softwares are for businesses, like Enterprise Resource Planning (ERP) and Customer Relationship Management (CRM). 
+A more common software is the webmail (e.g. Gmail) which let users read and receive their e-mails without the need to install any mail client. 
+Webmail services mentioned before fall in this model also. 
+Another interesting example is the Google Docs service, which let the user create documents, spreadsheets or even presentation slides right in a web browser. 
+The user doesn't need to install any softwares (except the web browser). 
+As one can see, these softwares are clearly intended for end users, who won't have to worry about security updates and all this stuff, as this is entirely taken care by the one providing the applications.
+
+
+
+
+
+%%--------------- subsection
+\section{PaaS}
+PaaS stands for \textit{Platform as a Service} and is intended for developping and deploying applications on an infrastructure. 
+Unlike SaaS, this model is destined to application developers and they don't need to install, configure or maintain any infrastructure (server, network, etc.) as this is taken care by the ones providing the PaaS. 
+This way, developers can focus on their work. 
+OpenShift, Heroku and Google App Engine are examples of PaaS.
+Both provide ready-to-use environment for developping applications.
+All the developpers need to do is to choose the language in which they want to code and eventually also the framework and the database system, and everything is ready to begin the development.
+
+
+
+
+
+%%--------------- subsection
+\section{IaaS}
+IaaS stands for \textit{Infrastructure as a Service} and means that infrastructure resources, like CPU, memory, storage, servers, are provided to the client on demand. A better definition of an infrastructure could be:
+\begin{quotation}
+\textit{
+IT infrastructure refers to the composite hardware, software, network resources and services required for the existence, operation and management of an enterprise IT environment. It allows an organization to deliver IT solutions and services to its employees, partners and/or customers and is usually internal to an organization and deployed within owned facilities.
+}\cite{cjanssen14}
+\end{quotation}
+
+IaaS is not intended to final users, but to network architects, whose work is to 
+\textit{design and implement data communications networks, and computer and information networks including limited area networks, wide area networks, intranets, and extranets.}\footnote{\url{https://www.recruiter.com/salaries/computer-network-architects-salary/}, 14.01.2015}
+
+Thanks to IaaS, companies don't have to spend money to buy new hardware to run their business, they can simply rent these hardware with the computing power they want, and it will be easy to add more computing power later if they need to and vice-versa. 
+Moreover, they don't need to worry about the hardware itself as it's not owned by the company (in case of a public cloud). 
+One of the most famous company proposing these services is Amazon. 
+Their service Amazon Elastic Compute Cloud (Amazon EC2). 
+For this bachelor work, we'll be using similar services offered by OpenStack, which will be presented in more details later.
+
+Taking a step further, recently another type of model has grown: MaaS, standing for \textit{Metal as a Service} proposed by Canonical. 
+
+\begin{quotation}
+\textit{A system that makes it quick and easy to set up the physical hardware on which to deploy complex scalable services, like Ubuntu’s OpenStack cloud infrastructure.}\footnote{\url{http://www.ubuntu.com/cloud/tools/maas}, 14.01.2015}
+\end{quotation}
+
+Contrary to IaaS, MaaS' goal is to provide real servers on demand with the speed of a cloud instance. Then with the help of Juju it is easier to deploy a IaaS like OpenStack on the hardware.
+
+
+
+
+
+

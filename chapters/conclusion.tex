@@ -1,0 +1,71 @@
+%% Conclusion
+
+
+\chapter{Conclusion}
+In this chapter, the findings of this bachelor work will be summarized, the problem encountered will be discussed and possible future works will be mentioned.
+
+
+%%--------------- section
+\section{Findings}
+The goal of this bachelor work was to get to know OpenStack, a open source cloud infrastructure project, and benchmark it.
+As a personal note, no knwoledge in the field of \textit{Cloud Computing} was there beforehand, especially in how everything works in details.
+The only knowledge was those of an end-user just using data storage services like Dropbox, and being happy that it works well.
+This bachelor work was a great opportunity to deepen these knowledge, by getting to know how everything works behind the scene, or how to setup a cloud infrastructure and being able to use it.
+
+Coming back to the main topic, in order to be able to benchmark OpenStack, virtual machines created with OpenStack were benchmarked with the help of the OLTP-Bench project, an open source project supporting several type of benchmark including TPC-C.
+The benchmark was first run on a chosen physical machine, whose results are used for comparison with the other benchmarks.
+In order to benchmark OpenStack, the OLTP-Bench was run on virtual machines with different flavors and with or without volume attached to them.
+In Phase 2 (virtual machines without volume), we obtained quite good performance results, but OpenStack couldn't beat the performance results obtained on the physical machine from Phase 1.
+In Phase 3 (virtual machines with volume), we obtained very good results, even better than the physical machine.
+From this we can conclude that attaching volumes to virtual machines can really improve the performance, and that OpenStack manages well the volumes.
+In Phase 4 (testing isolation), the results obtained are not quite good, this is caused by the fact that both virtual machines are accessing the same hard drive hosted on \texttt{compute2}.
+
+From these three phases, we can conclude that OpenStack is quite performant and can even perform better than physical machines.
+Also, we observed that in general there is little difference in performance when comparing \textit{large} and \textit{physical} flavor virtual machines.
+To be sure of this fact, it could be interesting to run the same benchmark on a virtual machine with \textit{small} or \textit{tiny} flavor.
+A general observation, is that when the scale factor increases, the throughput of the system decreases.
+
+Finally, OpenStack is a very interesting open source project, which is gaining in popularity as a free IaaS.
+Its performance is quite good, which important in \textit{Cloud Computing}, which aims to deliver computational power on demand.
+The web interface is very intuitive, which facilitates the management of the cloud infrastructure after a successful setup.
+
+
+
+
+
+
+
+%%--------------- section
+\section{Problems}
+During this bachelor work, some problems arised at different stages. 
+At first, we encountered problems when installing OpenStack on the different physical machines.
+The process is very long as there is no "one click" installation as one could except with a simple software installation.
+OpenStack relies on configuration files after installing the different compoenents.
+This is where problems arised, as sometimes there were some little errors in the official documentation.
+For example, it was specified that only the hostname of a machine can be used instead of giving the IP address for certain configuration files; but in reality, it was necessary to use the IP address instead. 
+This type of error is quite minor (it was encountered when setting up VNC) and is easily solved if the status of OpenStack is checked at each step of the installation.
+We also encountered network problems during the installation: at some point, it was possible to create instances but there were no IP assigned to them, and thus it was impossible to SSH the virtual machines.
+This was solved by reserving IP addresses from the university network.
+
+Now concerning the benchmarks, it took a few try in order to find a good configuration to run the test.
+Indeed, at first we only tried with the default values\footnote{\url{https://github.com/oltpbenchmark/oltpbench/blob/master/config/sample_tpcc_config.xml}, 21.05.2015}, and observed that after each run the throughput was increasing.
+So we didn't know how many run it was necessary to perform in order to have meaningful data.
+We try several configuration by increasing the duration and the scale factor.
+We finally decided to use the values presented in the Listing \ref{lst:lst_oltp_config}.
+
+
+%%--------------- section
+\section{Future work}
+With the different tests performed, we obtained quite useful insights regarding the OpenStack performance.
+But here are some other suggestions that could be used to obtained more meaningful results.
+
+First, as it has been shown in Phase 4, it could be more interesting to use a machine dedicated to volume management.
+Better performance results should be observed.
+Then, other tests can be performed by increasing the duration of a run. 
+It could be better to extend the duration to 40 minutes for example.
+Also, different number of terminals (20 and 80) can be used to see their impact on the performance.
+
+
+
+
+

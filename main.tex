@@ -1,0 +1,183 @@
+% used labels:
+% Figures (fig):
+% 	dashboard
+%	openstack_services_arch
+% 	os_arch
+% 	ph115_t40
+% 	vm115_large_wobs
+% 	vm115_physical_wobs
+% 	vm115_large_wbs
+% 	vm115_physical_wbs
+% 	vm116_large_wbs
+% 	vm116_physical_wbs
+% 	vm_large_iso
+% 	
+% 	
+% 	
+% 	
+% Tables (table):
+%	flavors_list
+%	flavors_list_2
+%	hdparm_res_PM
+%	hdparm_res_VM
+%	oltpbench_list
+% 	openstack_services_list
+% 	storage_list
+% 	tpcc_trans_type_list
+% 	tab_oltpb_scalefactor
+% 	
+% Listings (lst):
+% 	lst_cmd_oltpsh
+% 	lst_cmd_oltpb_cloning
+% 	lst_cmd_oltpbenchmark
+% 	lst_cmd_others_install
+% 	lst_oltp_script
+% 	lst_oltp_config
+% 	lst_cmd_mount_movedb
+% 	lst_apparmor
+% 	
+% Sections:
+% 	section_setup
+% 	
+% 	
+% Equation (eq):
+% 	eq_iqr
+
+
+
+
+
+
+% use "amsart" instead of "article" for AMSLaTeX format
+\documentclass[a4paper, 12pt, oneside, titlepage]{scrbook}
+% See geometry.pdf to learn the layout options. There are lots.
+\usepackage[margin=1.0in]{geometry}
+\geometry{letterpaper}
+
+% Activate for for rotated page geometry
+%\geometry{landscape}
+
+% Activate to begin paragraphs with an empty line rather than an indent
+%\usepackage[parfill]{parskip}
+
+% Use pdf, png, jpg, or epsÃÂ§ with pdflatex; use eps in DVI mode
+% TeX will automatically convert eps --> pdf in pdflatex
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{multirow}
+\usepackage{url}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+  %basicstyle=\ttfamily,
+  basicstyle=\footnotesize\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{gray},
+  keywordstyle=\color{blue}
+}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\rhead{\fancyplain{} \rightmark}
+\lfoot{}
+\cfoot{\fancyplain{} \thepage}
+\rfoot{}
+\fancypagestyle{plain}
+
+
+
+\begin{document}
+
+
+%%--------------- TITLE
+\include{chapters/title}
+\tableofcontents
+\listoffigures
+\listoftables
+\doublespacing
+
+
+
+%%--------------- abstract
+\chapter*{Abstract}
+% TODO: complete abstract
+Enter your abstract here
+
+{\bf Keywords:} OpenStack, Open cloud, IaaS, Virtualization, Benchmark, TPC-C.
+
+
+%%--------------- section
+\include{chapters/intro}
+
+
+%%--------------- section
+\include{chapters/chapter_1}
+
+
+%%--------------- section
+\include{chapters/chapter_2}
+
+
+%%--------------- section
+\include{chapters/chapter_3}
+
+
+
+%%--------------- section
+\include{chapters/chapter_4}
+
+
+
+%%--------------- section
+\include{chapters/conclusion}
+
+
+
+
+
+
+
+
+
+%%--------------- section
+%\chapter*{References}
+\include{chapters/biblio}
+% \bibliographystyle{plain}
+% \bibliography{biblio}
+
+
+
+
+
+
+
+
+%%--------------- section
+% \chapter*{Glossary}
+
+
+
+
+
+
+
+
+
+%%--------------- section
+% \chapter*{Annexes}
+
+
+
+
+\end{document}  

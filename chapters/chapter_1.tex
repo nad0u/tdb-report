@@ -51,29 +51,27 @@ The developers just need to choose the programming language in which they want t
 
 %%--------------- subsection
 \section{IaaS}
-IaaS stands for \textit{Infrastructure as a Service} and means that infrastructure resources, like CPU, memory, storage, servers, are provided to the client on demand. A better definition of an infrastructure could be:
+Finally, \textit{Infrastructure as a Service} (IaaS) model means that infrastructure resources, such as CPU, memory, storage and servers, are provided to the client on demand. A better definition of an infrastructure could be:
 \begin{quotation}
 \textit{
 IT infrastructure refers to the composite hardware, software, network resources and services required for the existence, operation and management of an enterprise IT environment. It allows an organization to deliver IT solutions and services to its employees, partners and/or customers and is usually internal to an organization and deployed within owned facilities.
 }\cite{cjanssen14}
 \end{quotation}
 
-IaaS is not intended to final users, but to network architects, whose work is to 
-\textit{design and implement data communications networks, and computer and information networks including limited area networks, wide area networks, intranets, and extranets.}\footnote{\url{https://www.recruiter.com/salaries/computer-network-architects-salary/}, 14.01.2015}
+IaaS is not intended to final users, but to infrastructure architects, whose work is to ...\rp{please rewrite, network architects only do networks, not servers/memory/storage.}
 
-Thanks to IaaS, companies don't have to spend money to buy new hardware to run their business, they can simply rent these hardware with the computing power they want, and it will be easy to add more computing power later if they need to and vice-versa. 
-Moreover, they don't need to worry about the hardware itself as it's not owned by the company (in case of a public cloud). 
-One of the most famous company proposing these services is Amazon. 
-Their service Amazon Elastic Compute Cloud (Amazon EC2). 
-For this bachelor work, we'll be using similar services offered by OpenStack, which will be presented in more details later.
+Thanks to IaaS, companies do not have to spend money to buy new hardware to run their business, they can simply rent this hardware together with the computational resources they want, and it will be easy to add more computing power later if they need to and vice-versa. 
+Moreover, they do not need to worry about the hardware itself as it is not owned by the company (in case of a public cloud). 
+One of the most prominent companies proposing such services is Amazon \rp{add footnote}. 
+Their service Amazon Elastic Compute Cloud (Amazon EC2) \rp{sentence looks unfinished}. 
+In this work, we are going to use similar services offered by OpenStack, which will be presented in more details later.
 
-Taking a step further, recently another type of model has grown: MaaS, standing for \textit{Metal as a Service} proposed by Canonical. 
-
+Taking a step further, recently another type of model has risen: \textit{Metal as a Service} (MaaS) proposed by Canonical:
 \begin{quotation}
 \textit{A system that makes it quick and easy to set up the physical hardware on which to deploy complex scalable services, like Ubuntu’s OpenStack cloud infrastructure.}\footnote{\url{http://www.ubuntu.com/cloud/tools/maas}, 14.01.2015}
 \end{quotation}
 
-Contrary to IaaS, the goal of MaaS is to provide real servers on demand with the speed of a cloud instance. Then with the help of Juju it is easier to deploy a IaaS like OpenStack on the hardware.
+Contrary to IaaS, the goal of MaaS is to provide real servers on demand with the speed of a cloud instance. Then with the help of Juju\rp{add footnote + small descriptions, you need to introduce it to an unprepared reader} it is easier to deploy a IaaS like OpenStack on the hardware.
 
 
 

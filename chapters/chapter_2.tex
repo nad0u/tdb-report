@@ -3,26 +3,27 @@
 
 \chapter{OpenStack}
 
-This section gives a detailed desciption of the \textit{OpenStack} technology in order to better understand how it works.
+This section gives a detailed description of the \textit{OpenStack} technology in order to better understand how it works.
 
 
 %%--------------- section
 \section{Definition}
 \textit{OpenStack} is an open source project licensed under the \textit{Apache License 2.0} and consists of several projects (or services), which allow creating cloud infrastructures.
-In other words it is \textit{a cloud operating system that controls large pools of compute, storage, and networking resources throughout a datacenter, all managed through a dashboard that gives administrators control while empowering their users to provision resources through a web interface.
+In other words it is \textit{a cloud operating system that controls large pools of compute, storage, and networking resources throughout a data center, all managed through a dashboard that gives administrators control while empowering their users to provision resources through a web interface.
 }\cite{osdef}
 Thus, OpenStack provides an out of the box IaaS solution.
 
-Different projects (or services) offered by OpenStack can be installed separately on different machines, but they are working together. 
-A list of these projects is given by the Table \ref{table:openstack_services_list}.
-For the experiments only the projects Nova, Keystone, Horizon, Glance and Cinder were used and will be discussed in more details below. 
-Figure \ref{fig:openstack_services_arch} shows how each service interact with other services in a typical OpenStack environment.
-
+%Different projects (or services) offered by OpenStack can be installed separately on different machines, but they are working together.
+\rp{try to avoid passive form in your text where possible, it sounds bad, compare with your sentence in the comment above.}
+OpenStack offers different services that can be distributed across different machines in various configurations.
+A list of these projects is given in the Table \ref{table:openstack_services_list}.
+Only the projects Nova, Keystone, Horizon, Glance and Cinder were used for the experiments and will be discussed in more details below.
+Figure \ref{fig:openstack_services_arch} shows how each service interacts with other services in a typical OpenStack environment.
 
 %%--------------- section
 \section{Services}
 
-In this section, the different services used for the experiments will be discussed in details.
+In this section, the different services used for the experiments are discussed in details.
 
 \begin{figure}[h]
 	\centering
@@ -37,16 +38,16 @@ In this section, the different services used for the experiments will be discuss
 		\hline
 		\textbf{Project name} & \textbf{Service} & \textbf{Description}\\
 		\hline
-		Nova & Compute & Create and manage virtual machines\\
-		Keystone & Identity & Provide authentication and authorization\\
+		Nova & Compute & Creates and manages virtual machines\\
+		Keystone & Identity & Provides authentication and authorization\\
 		Horizon & Dashboard & Web interface to manage all services\\
-		Neutron & Networking & Manage networking for advanced network topologies\\
-		Glance & Image & Provide a registry of virtual machine images\\
-		Cinder & Block Storage & Provide persistent storage to VM\\
-		Swift & Object Storage & Store data, including virtual images\\
-		Ceilometer & Telemetry & Collect metering data (CPU and network costs)\\
-		Heat & Orchestration & Generate running cloud applications\\
-		Trove & Database & Provide scalable and reliable cloud provisioning functionality for relational and non-relational database engines\\
+		Neutron & Networking & Manages networking for advanced network topologies\\
+		Glance & Image & Provides a registry of virtual machine images\\
+		Cinder & Block Storage & Provides persistent storage to VMs\\
+		Swift & Object Storage & Stores data, including virtual images\\
+		Ceilometer & Telemetry & Collects metering data (CPU and network costs)\\
+		Heat & Orchestration & Generates running cloud applications \rp{I don't understand this}\\
+		Trove & Database & Provides scalable and reliable cloud provisioning functionality for relational and non-relational database engines\\
 		\hline
 	\end{tabular}
 	\caption{OpenStack services}

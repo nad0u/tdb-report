@@ -1,3 +1,4 @@
+%!TEX root = ../main.tex
 %% Chapter 2 - Openstack
 
 
@@ -54,8 +55,11 @@ In this section, the different services used for the experiments are discussed i
 	\label{table:openstack_services_list}
 \end{table}
 
-\paragraph{Nova}\mbox{}\\
-Nova is responsible for creating and managing virtual machines on demand. When creating a virtual machine, the user can specify which flavor he wants to use. A flavor lets you choose the characteristics of your virtual machine: RAM, VCPUs (or virtual CPUs), root disk, ephemeral disk and swap disk. By default, Nova provides a set of flavors and the user is free to create more if he wants to. Table \ref{table:flavors_list} shows a list of the default flavors (ephemeral and swap disks are set to 0).
+\subsection{Nova}
+Nova service is responsible for creating and managing virtual machines on demand.
+Upon creating a virtual machine, the user can specify a flavor he wants to use.
+The flavor allows to set the characteristics of a virtual machine: amount of RAM, number of virtual CPUs (VCPUs), sizes of root disk, ephemeral disk and swap disk. By default, Nova provides a set of flavors and the user can create more if needed.
+Table \ref{table:flavors_list} shows characteristics for a list of the default flavors (ephemeral and swap disks are set to 0).
 
 \begin{table}[h]
 	\centering
@@ -144,13 +148,13 @@ For our expriment, it was sufficient to only use Nova to manage networking inste
 \end{table}
 
 
-\paragraph{Glance}\mbox{}\\
+\subsection{Glance}
 Glance is responsible for providing a registry of virtual machine images. 
 The user is then able to easily retrieve an actual image for his virtual machine. 
 An image contains an operating system image, which will be used to launch a virtual machine. 
 The uploaded images are stored on the same system that hosts the Image Service, in the directory \texttt{/var/lib/glance/images/} by default.
 
-\paragraph{Cinder}\mbox{}\\
+\subsection{Cinder}
 Cinder is responsible for providing persistent storage to virtual machines. 
 The persistent storage is also called volume. 
 Unlike ephemeral storage that was discussed before, all data that are on a volume persist when a virtual machine is terminated. 
@@ -162,7 +166,7 @@ The attached volume can also be bootable, and thus replace the root disk seen be
 It has to be noted that one volume can only be attached to one instance at a time, but one instance can have several volumes attached to it.
 
 
-\paragraph{Keystone}\mbox{}\\
+\subsection{Keystone}
 Keystone is responsible for providing authentication and authorization for the other OpenStack services and users. 
 Therefore, it offers \textit{User management} and \textit{Service management}. 
 

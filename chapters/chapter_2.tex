@@ -87,8 +87,8 @@ The latter will be useful when one needs to extend the storage of a virtual mach
 Coming back to flavors, ephemeral disk corresponds to the amount of disk space to use for the ephemeral partition when a virtual machine is launched. 
 These type of disks are bonded to the lifecycle of a virtual machine, meaning that if a virtual machine is terminated, all the data on the disk are lost. 
 However, the data persist after rebooting a virtual machine. 
-The root disk is nothing but a special case of ephemeral disk. 
-It is used for the root partition (/) and unlike ephemeral disk, it is included in snapshots of virtual machine. 
+The root disk is a special case of ephemeral disk. 
+It is used to create a root partition (/) for a virtual machine and, unlike ephemeral disk, it is included in snapshots of the virtual machine. 
 If the size of the root disk is set to 0, this means that its size will be set to the one of image containing the operating system.
 Finally, there is also the possibility to add a swap disk to the virtual machine.
 The different storage solutions of OpenStack are summarized in Table \ref{table:storage_list}.

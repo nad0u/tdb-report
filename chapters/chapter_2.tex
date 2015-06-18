@@ -15,7 +15,6 @@ In other words it is \textit{a cloud operating system that controls large pools 
 Thus, OpenStack provides an out of the box IaaS solution.
 
 %Different projects (or services) offered by OpenStack can be installed separately on different machines, but they are working together.
-\rp{try to avoid passive form in your text where possible, it sounds bad, compare with your sentence in the comment above.}
 OpenStack offers different services that can be distributed across different machines in various configurations.
 A list of these projects is given in the Table \ref{table:openstack_services_list}.
 Only the projects Nova, Keystone, Horizon, Glance and Cinder were used for the experiments and will be discussed in more details below.
@@ -47,7 +46,7 @@ In this section, the different services used for the experiments are discussed i
 		Cinder & Block Storage & Provides persistent storage to VMs\\
 		Swift & Object Storage & Stores data, including virtual images\\
 		Ceilometer & Telemetry & Collects metering data (CPU and network costs)\\
-		Heat & Orchestration & Generates running cloud applications \rp{I don't understand this}\\
+		Heat & Orchestration & Deploys (complex) running cloud applications or stack (i.e. flavor, instance, network, etc.) described with templates (YAML text files)\\
 		Trove & Database & Provides scalable and reliable cloud provisioning functionality for relational and non-relational database engines\\
 		\hline
 	\end{tabular}

@@ -212,28 +212,28 @@ For our experiments, OpenStack Icehouse was installed and configured on three ph
 \end{itemize}
 }
 
-As installing OpenStack is a relatively long process, all the steps won't be describe in this section. The OpenStack documentation \cite{osinstall}
-descibes a well step-by-step that was followed in order to make everything work correctly.
+As installing OpenStack is a relatively long process, all the steps are not described in this section. The OpenStack documentation \cite{osinstall}
+describes a well step-by-step that was followed in order to make everything work correctly.
 
 
 \paragraph{Naming convention}\mbox{}\\
-Virtual machines created on \texttt{compute1} will be called \texttt{vm1}, and those created on \texttt{compute2} will be called \texttt{vm2}. Moreover if the virtual machine has a block storage attached to it, \texttt{bs} will be attached to its name, becoming \texttt{vm1bs} for example. This convention will be followed for the rest of this report.
+Virtual machines created on \texttt{compute1} are called \texttt{vm1}, and those created on \texttt{compute2} are called \texttt{vm2}. Moreover if the virtual machine has a block storage attached to it, \texttt{bs} will be attached to its name, becoming \texttt{vm1bs} for example. This convention will be followed for the rest of this report.
 
 
 %%--------------- subsubsection
 \subsection{Machines}
-In this section, the hardware used for the experiments will be presented. We have three physical machines on which OpenStack services are installed, and several virtual machines with different flavors will be created on the physical machines with OpenStack.
+This section will present the hardware used for the experiments. We have three physical machines on which OpenStack services are installed, and several virtual machines with different flavors will be created on the physical machines with OpenStack.
 
 
 \paragraph{Physical machines}\mbox{}\\
-The three physical machines briefly presented in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
+The three physical machines mentionned in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
 Each machine uses a 3.4 GHz Intel Core i7-3770. 
 There is 16GB of RAM, $4\times4$GB DIMM DDR3 Synchronous 1600MHz. 
 They have a Western Digital HDD of 500GB. 
-In the case of \texttt{compute2}, a partition of 100GB (93GB after partioning with GParted) has been created in order to have space for the Block Storage service of OpenStack instead of a full disk recommended by the OpenStack documentation. 
-Physical and logical volumes have been created with LVM (Logical Volume Manager) for the partition created.
+In the case of \texttt{compute2}, a partition of 100GB (93GB after partioning with \textit{GParted}\footnote{Graphical editor for managing disk partitions (\url{http://gparted.org})}) has been created in order to have space for the Block Storage service of OpenStack instead of a full disk recommended by the OpenStack documentation. 
+Physical and logical volumes have been created with the Logical Volume Manager (LVM) on the partition.
 The machines are running Ubuntu 14.04 LTS 64 bit operating system. 
-To create and run virtual machines, the open source hypervisor KVM (Kernel-based Virtual Machine) is used by the Compute Service. Concerning the network, each machine only have one interface card, instead of two interface cards recommended by the OpenStack documentation.
+To create and run virtual machines, the open source hypervisor Kernel-based Virtual Machine (KVM) is used by the Compute Service. Concerning the network, each machine only have one interface card, instead of two interface cards recommended by the OpenStack documentation.
 
 
 

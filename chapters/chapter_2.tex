@@ -79,7 +79,6 @@ Table \ref{table:flavors_list} shows characteristics for a list of the default f
 
 OpenStack provides two different services to manage storage, namely \textit{Block Storage} and \textit{Object Storage}.
 As mentioned earlier, the different OpenStack services can be installed separately, and one does not need to install all the services in order to have a virtual machine running.
-\rp{you use phrases like ``said later''/``earlier'' way too often, try to reduce, I've already cut some.}
 By default, when creating a virtual machine, it will have its own storage (i.e. a disk or a root disk), which is mandatory in order to install an operating system on it,
 and it does not need the Block Storage service. 
 The latter will be useful when one needs to extend the storage of a virtual machine in the future. 
@@ -148,6 +147,7 @@ For our experiment, it was sufficient to only use Nova to manage networking inst
 \end{table}
 
 
+
 \subsection{Glance}
 Glance is responsible for providing a registry of virtual machine images. 
 The user is then able to easily retrieve an actual image for his virtual machine. 
@@ -157,12 +157,12 @@ The uploaded images are stored on the same system that hosts the Image Service, 
 \subsection{Cinder}
 Cinder is responsible for providing persistent storage to virtual machines. 
 The persistent storage is also called volume. 
-Unlike ephemeral storage that was discussed before, all data that are on a volume persist when a virtual machine is terminated. 
-This volume is similar to the Amazon Elastic Block Storage (EBS) 
+Unlike ephemeral storage, all data that are on a volume persist when a virtual machine is terminated. 
+This volume is similar to the \textit{Amazon Elastic Block Storage (EBS)}\footnote{\url{http://aws.amazon.com/ebs}} 
 and can be compared to an external hard disk drive (HDD) that is plugged into a computer: we say that the volume is attached to an instance. 
 In order for the attached volume to be usable, it has to be mounted and formatted. 
 After these steps, files can be stored on the volume. 
-The attached volume can also be bootable, and thus replace the root disk seen before.
+The attached volume can also be bootable, and thus replace the root disk.
 It has to be noted that one volume can only be attached to one instance at a time, but one instance can have several volumes attached to it.
 
 
@@ -186,7 +186,7 @@ The \textit{Service management} provides identity, token, catalog and policy ser
 % 	\label{fig:openstack_keystone}
 % \end{figure} %%% [ref] http://docs.openstack.org/icehouse/install-guide/install/apt/content/keystone-concepts.html
 
-\paragraph{Horizon}\mbox{}\\
+\subsection{Horizon}
 Horizon provides a nice web interface (an example is shown in Figure \ref{fig:dashboard}) that lets users and administrators interact with OpenStack services easily, instead of executing commands through a terminal. 
 However, Horizon cannot totally replace the command line tool.
 Once logged in, users can launch instances and use it directly from a web browser thanks to VNC (or Virtual Network Computing) configured during the installation of OpenStack.

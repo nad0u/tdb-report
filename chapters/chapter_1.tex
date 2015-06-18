@@ -16,9 +16,18 @@ A good example is \textit{Dropbox}\footnote{\url{https://dropbox.com}} service, 
 In the middle, there is the hybrid cloud, which is a mix of the previous two types of clouds.
 
 In addition to the three types presented earlier, there exist several cloud models.
-The three most important ones are IaaS, PaaS and SaaS \rp{give non-acronym versions first, probably make a list.}, which will be presented in the next sections. 
-These proposed models are not always free, or in most cases they are free with a limited access to resources \rp{You're mixing a bit companies that provide services and models themselves, cloud model have nothing to do with pricing, they are just abstractions, I suggest to remove this and the next sentence.}. 
-For intensive usage, the client (in general the company) must pay a monthly fee to the one provisioning the service.
+The three most important ones are: 
+
+{
+\singlespacing
+\begin{itemize}
+	\item Infrastructure as a Service (IaaS)
+	\item Platform as a Service (PaaS)
+	\item Software as a Service (SaaS)
+\end{itemize}
+}
+
+They will be presented in the next sections.
 
 
 
@@ -43,7 +52,7 @@ As can be seen, this software is clearly intended for end users, who do not have
  \textit{Platform as a Service} (PaaS) model is intended for developing and deploying applications on an existing infrastructure.
 Unlike SaaS, this model is designed for application developers so they do not need to install, configure or maintain any infrastructure (servers, network, etc.) as this is taken care by a PaaS provider. 
 This way, PaaS fosters the work of developers by freeing them from system administration work. 
-OpenShift, Heroku and Google App Engine are examples of PaaS providers \rp{create footnotes for every service mentioned as I did before}.
+\textit{OpenShift}\footnote{\url{https://www.openshift.com}}, \textit{Heroku}\footnote{\url{https://www.heroku.com}} and \textit{Google App Engine}\footnote{\url{https://cloud.google.com/appengine}} are examples of PaaS providers.
 All these companies provide ready-to-use environments for developing applications.
 The developers just need to choose the programming language in which they want to code and eventually also the framework and the database system, and everything is ready to start the development.
 
@@ -62,7 +71,7 @@ IaaS is not intended to final users, but to infrastructure architects, whose wor
 
 Thanks to IaaS, companies do not have to spend money to buy new hardware to run their business, they can simply rent this hardware together with the computational resources they want, and it will be easy to add more computing power later if they need to and vice-versa. 
 Moreover, they do not need to worry about the hardware itself as it is not owned by the company (in case of a public cloud). 
-One of the most prominent companies proposing such services is Amazon \rp{add footnote}. 
+One of the most prominent companies proposing such services is \textit{Amazon}\footnote{\url{http://aws.amazon.com}}. 
 Their service Amazon Elastic Compute Cloud (Amazon EC2) \rp{sentence looks unfinished}. 
 In this work, we are going to use similar services offered by OpenStack, which will be presented in more details later.
 
@@ -71,7 +80,9 @@ Taking a step further, recently another type of model has risen: \textit{Metal a
 \textit{A system that makes it quick and easy to set up the physical hardware on which to deploy complex scalable services, like Ubuntu’s OpenStack cloud infrastructure.}\footnote{\url{http://www.ubuntu.com/cloud/tools/maas}, 14.01.2015}
 \end{quotation}
 
-Contrary to IaaS, the goal of MaaS is to provide real servers on demand with the speed of a cloud instance. Then with the help of Juju\rp{add footnote + small descriptions, you need to introduce it to an unprepared reader} it is easier to deploy a IaaS like OpenStack on the hardware.
+Contrary to IaaS, the goal of MaaS is to provide real servers on demand with the speed of a cloud instance. \textit{Juju}\footnote{\url{https://jujucharms.com}}, a service orchestration tool, is often use together with MaaS to deploy and scale more easily the different services. The basic idea of Juju is to add charms (the equivalent of packages in a Linux system) and link them to services: the installation and configuration is done automatically.
+
+% Then with the help of \textit{Juju}\footnote{\url{https://jujucharms.com}}\rp{add footnote + small descriptions, you need to introduce it to an unprepared reader} it is easier to deploy a IaaS like OpenStack on the hardware.
 
 
 

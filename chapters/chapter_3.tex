@@ -13,7 +13,7 @@ For our experiments, we used the TPC-C benchmark.
 TPC-C is defined as an \enquote{\textit{on-line transaction processing (OLTP) benchmark}}\footnote{\url{http://www.tpc.org/tpcc}, 14.09.2014} by the Transaction Processing Performance Council (TPC).
 The performance of a given system is measured by simulating an OLTP database environment in which concurrent transactions happen.
 Thus, a typical OLTP application depicting a wholesale supplier is used 
-and only activites or tasks having an impact on resources utilization are considered, as they may affect the performance of the whole system.
+and only activities or tasks having an impact on resources utilization are considered, as they may affect the performance of the whole system.
 This means that activities requiring small resource utilization and/or appearing with low frequency are completly ignored, 
 letting just the most significant ones (listed in Table \ref{table:tpcc_trans_type_list}) to evaluate the performance.
 To better understand how this benchmark evaluates a system, one must understand how the chosen wholesale supplier is organized.
@@ -34,9 +34,9 @@ Of course, as the business is growing, new warehouses and everything that comes 
 		\hline
 		\textbf{Transaction type} & \textbf{Description}\\
 		\hline
-		New Order & a enters a new order into the database\\
+		New Order & enters a new order into the database\\
 		\hline
-		Payment & a updates the customer balance's\\
+		Payment & updates the customer balance\\
 		\hline
 		Order Status & checks the status of an order\\
 		\hline
@@ -62,7 +62,7 @@ The table Item is an exception and has a fixed number of rows.
 	\label{fig:tpcc_erd}
 \end{figure}
 
-During a benchmark run, simulated users are interacting with the system by issues different transactions, which are then processed by TPC-C.
+During a benchmark run, simulated users are interacting with the system by issuing different transactions, which are then processed by TPC-C.
 It returns the performance in tpmC (or transaction per minute C), which corresponds to the average number of new orders the system is processing per minute.
 It is then straighforward to compared the performance of different systems.
 
@@ -70,17 +70,16 @@ It is then straighforward to compared the performance of different systems.
 
 %%--------------- subsection
 \section{OLTP-Bench}
-OLTP-Bench\footnote{available on Github: \url{https://github.com/oltpbenchmark/oltpbench}} is an open source project which aims to facilitate benchmarking by providing different benchmarks ready to use. 
+\textit{OLTP-Bench}\footnote{\url{https://github.com/oltpbenchmark/oltpbench}} is an open source project which aims to facilitate benchmarking by providing different benchmarks ready to use. 
 Table \ref{table:oltpbench_list} summarizes the different benchmarks supported by this tool, which includes TPC-C benchmark presented in the previous section.
 OLTP-Bench is a command line tool which is easy to use in order to populate a database and to run a benchmark.
 Moreover, it allows to easily change parameters thanks to xml-based configuration files.
-This configuration requires only few things, like setting the connection to database, the scale factor (which corresponds to the number of warehouse discussed in the previous section), the number of terminals (which corresponds to the number of simulated users, who will interact with the system (i.e. do business transactions)), the workload and the duration of the benchmark.
-An example of such configuration is shown later in Listing \ref{lst:lst_oltp_config}.
-
+This configuration requires only few things like setting the connection to the database, the scale factor (which corresponds to the number of warehouse), the number of terminals (which corresponds to the number of simulated users, who will interact with the system (i.e. do business transactions)), the workload and the duration of the benchmark.
+An example of such configuration is shown in Listing \ref{lst:lst_oltp_config}.
 OLTP-Bench returns a throughput expressed in req/s (or request per second), in contrast to tmpC seen with TPC-C specification.
-This value is used to compare the performance between the different machine.
+This value is used to compare the performance between the different machines.
 
-OLTP-Bench will discussed in a bit more details in Section \ref{sec:softwares} dedicated to the different softwares used for the experiments.
+OLTP-Bench will be discussed in a bit more details in Section \ref{sec:softwares} dedicated to the different softwares used for the experiments.
 
 \begin{table}[h]
 	\centering

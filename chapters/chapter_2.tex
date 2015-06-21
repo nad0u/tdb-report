@@ -222,11 +222,11 @@ Virtual machines created on \texttt{compute1} are called \texttt{vm1}, and those
 
 %%--------------- subsubsection
 \subsection{Machines}
-This section will present the hardware used for the experiments. We have three physical machines on which OpenStack services are installed, and several virtual machines with different flavors will be created on the physical machines with OpenStack.
+This section will present the hardware used for the experiments. We have three physical machines on which OpenStack services are installed, and several virtual machines with different flavors will be created on the physical machines.
 
 
 \paragraph{Physical machines}\mbox{}\\
-The three physical machines mentionned in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
+The three physical machines mentioned in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
 Each machine uses a 3.4 GHz Intel Core i7-3770. 
 There is 16GB of RAM, $4\times4$GB DIMM DDR3 Synchronous 1600MHz. 
 They have a Western Digital HDD of 500GB. 
@@ -250,7 +250,7 @@ With the \textit{large} flavor, we try to have half of characteristics of a phys
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
-		\textbf{Flavor} & \textbf{VCPUs} & \textbf{Disk (in GB)} & \textbf{RAM (in MB)}\\
+		\textbf{Flavor} & \textbf{\# of VCPUs} & \textbf{Disk size (GB)} & \textbf{RAM size (MB)}\\
 		\hline
 		m1.tiny & 1 & 1 & 512 \\
 		m1.small & 1 & 20 & 2048 \\
@@ -267,7 +267,7 @@ With the \textit{large} flavor, we try to have half of characteristics of a phys
 
 %%--------------- subsubsection
 \subsection{OpenStack services} % TODO: or Components installation (?)
-In this section, we will briefly explained which OpenStack services are installed on which physical machines and their purposes. The repartition of the different compoenents is shown in Figure \ref{fig:os_arch}.
+In this section, we will briefly explained which OpenStack services are installed on which physical machines and their purposes. The repartition of the different components is shown in Figure \ref{fig:os_arch}.
 
 \begin{figure}[h]
 	\centering
@@ -276,18 +276,17 @@ In this section, we will briefly explained which OpenStack services are installe
 	\label{fig:os_arch}
 \end{figure}
 
-First, let's take a look at \texttt{controller}. 
-As its name suggests it, the controller node is the heart of our OpenStack architecture, and thus all the different services APIs (Application Programming Interface) are installed on it. 
+The controller node is the heart of our OpenStack architecture, and thus all the different services APIs (Application Programming Interface) are installed on it. 
 Indeed, Keystone is there to manage users, and thus OpenStack services, as a user is created for each service. 
-Each request made by a service is handled by Keystone first: the service must authenticate against Keystone, if this succeeds, then permissions are also checked, and if this is okay, the request is accepted and further actions can be done by the service who correctly authenticated itself. 
+Each request made by a service is handled by Keystone first: the service must authenticate against Keystone, if this succeeds, then permissions are also checked, and if this is okay, the request is accepted and further actions can be carried on by the service. 
 Glance (\textit{glance-api} and \textit{glance-registry}) is also installed on the controller node. 
 This means that all actions regarding images (creation, edition, deletion) are handled by the controller node. 
 Moreover all the different images are stored on it.
-% TODO: put this text and the image in chapter 1 ?
-A web interface makes OpenStack easier to use, and for that Horizon will be installed on the controller node, letting one access OpenStack with the following link \url{http://diufpc117.unifr.ch/horizon}\footnote{Access restricted to unifr network}. 
+A web interface makes OpenStack easier to use, and for that Horizon is also installed on the controller node.
+%, letting one access OpenStack with the following link \url{http://diufpc117.unifr.ch/horizon}\footnote{Access restricted to unifr network}. 
 An overview of the dashboard is shown in Figure \ref{fig:dashboard}. 
-As it can be seen, the dashboard offers access to each service installed, and as an administrator, it is possible to manage anything. 
-To create, edit and delete an instance, a volume or an image, the user will access to these services through the \textit{Project} tab.
+It offers access to each service installed, and as an administrator, it is possible to manage everything. 
+To create, edit and delete an instance, a volume or an image, the user will access these services through the \textit{Project} tab.
 %
 \begin{figure}[h]
 	\centering
@@ -297,19 +296,19 @@ To create, edit and delete an instance, a volume or an image, the user will acce
 \end{figure}
 %
 %TODO: nova -> describe each service?
-In order to be able to create virtual machines, some components of Nova have to be installed on the controller node. These components are there for managing purpose. 
+In order to be able to create virtual machines, some components of Nova have to be installed on the controller node. These components are there for management purpose. 
 Among them, we can mention \textit{nova-api}, \textit{nova-cert}, \textit{nova-consoleauth} and \textit{nova-novncproxy} for accessing an instance via VNC, and \textit{nova-scheduler} to determine on which physical machine an instance will run.
 Likewise, \textit{cinder-api}, \textit{cinder-volume} and \textit{cinder-scheduler} components of Cinder are installed on the controller for management purpose.
 As each OpenStack needs to store some information, a database is necessary. 
-For this a MySQL database is installed and configured on the controller node. 
+For this a \textit{MySQL}\footnote{\url{http://www.mysql.com}} database is installed and configured on the controller node. 
 On any additional node (in our case, on \texttt{compute1} and \texttt{compute2}), only a MySQL client is installed to access the database hosted on the controller node.
 %TODO: messaging system?
 
 
-Compared to the controller node, \texttt{compute1} and \texttt{compute2} are less complex and don't need to run as many services as the controller. 
-For \texttt{compute1}, as its role is to create and host the virtual machines, other compoenents of the Nova project are needed: \textit{nova-compute}, which is responsible for creating and terminating virtual machines, and \textit{nova-network}, which is responsible for managing the network (bridging, updating iptables rules) for the virtual machines. 
+Compared to the controller node, \texttt{compute1} and \texttt{compute2} are less complex and do not need to run as many services as the controller. 
+For \texttt{compute1}, as its role is to create and host the virtual machines, other components of the Nova project are needed: \textit{nova-compute}, which is responsible for creating and terminating virtual machines, and \textit{nova-network}, which is responsible for managing the network (bridging, updating iptables rules) for the virtual machines. 
 
-Finally, \texttt{compute2} has the same compoenents as \texttt{compute1} regarding the Nova project. 
+Finally, \texttt{compute2} has the same components as \texttt{compute1} regarding the Nova project. 
 As this node also needs to take care of the creation and deletion of volumes, the \textit{cinder-volume} component of the Cinder project is present on the node. 
 
 

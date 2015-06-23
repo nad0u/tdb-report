@@ -2,8 +2,8 @@
 
 
 \chapter{Experiments}
-In this chapter, the practical part of this bachelor work will be presented.
-First, a general decription of how the experiments is organized is presented.
+This chapter presents the practical part of the bachelor work.
+First, a general description of how the experiment organization is presented.
 Then, the choice of the different machines will be discussed in the Preliminary section.
 For this choice, different little benchmarks have been used, which will be discussed.
 Then, the configuration of the different physical and virtual machines will be presented in details, in order for these experiments to be reproductible.
@@ -13,16 +13,16 @@ Finally, the different tests and their results will be discussed.
 
 %%--------------- section
 \section{Description and procedure}
-As already mentioned before in this document, a database benchmark, named TPC-C, has been chosen in order to evaluate the performance of OpenStack.
+A database benchmark, named TPC-C, has been chosen in order to evaluate the performance of OpenStack.
 The OLTP-Bench project has been used to run TPC-C benchmark on the different physical and virtual machines running a MySQL server.
 The virtual machines are created with different configurations (flavors, volume attached or not). 
 It is expected to see the difference in performance for these different configurations and therefore the performance of OpenStack.
-These results will be compared to the result obtained when running OLTP-Bench on the chosen physical machine (Section \ref{sec:preliminary} shows how this machine is choosen).
+These results will be compared to the result obtained when running OLTP-Bench on the chosen physical machine (Section \ref{sec:preliminary} shows how this machine is chosen).
 
 The tests are presented in four different phases.
-In the first phase, OLTP-Bench is run on the physical machine chosen.
-In the second, it is run on virtual machines with different flavors.
-The third phase phase is similar to the second, except that a volume is attached to the virtual machine.
+In the first phase, OLTP-Bench is run on the chosen physical machine.
+In the second phase, it is run on virtual machines with different flavors.
+The third phase is similar to the second one, except that a volume is attached to the virtual machine.
 The last phase aims to test isolation, which is done by running OLTP-Bench on two different virtual machines at the same time.
 
 
@@ -34,15 +34,15 @@ The last phase aims to test isolation, which is done by running OLTP-Bench on tw
 \section{Preliminary}
 \label{sec:preliminary}
 Before beginning benchmarking with OLTP-Bench, we need to have a point of comparison, a machine with which we can compare all the results obtained. 
-In order to choose this machine, the \texttt{hdparm} and Bandwidth benchmark have been used. 
+In order to choose this machine, the \textit{hdparm}\footnote{\url{http://linux.die.net/man/8/hdparm}} and \textit{Bandwidth}\footnote{\url{https://zsmith.co/bandwidth.html}} benchmark have been used. 
 These two little benchmarks will evaluate physical machine components (hard disk and memory).
-Based on their results, a reference machine will be chosen and the experiments will begin.
+Based on their results, a reference machine will be chosen and the experiments will be carried on.
 
 
-\paragraph{HDPARM Benchmark}\mbox{}\\
+\subsection{HDPARM Benchmark}
 %%--------------- begin: HDPARM
-The \texttt{hdparm} is a command line program on Linuex systems and offers a bunch of parameters that lets one test the hardware of a machine in details. 
-It should be noted that some parameters are risky and therefore has not been used for this experiment. 
+\textit{Hdparm} is a command line program on Linux systems and offers a great number of parameters that let one test the hardware of a machine in details. 
+It should be noted that some parameters can harm a computer and therefore have not been used for this experiment. 
 Running the benchmark is pretty straightforward and is shown in Listing \ref{lst:lst_hdparm}.
 In order to issue these commands, one must be root or use the command with \texttt{sudo}.
 
@@ -58,13 +58,13 @@ In order to issue these commands, one must be root or use the command with \text
 \end{lstlisting}
 }
 
-The options \texttt{-Tt} allow to benchmark the reading speed of the hard disk drive (HDD) and the memory (RAM) without accessing the HDD. 
+The options \texttt{-Tt} allow to benchmark the reading speed of the HDD and the reading speed of the memory (RAM) without accessing the HDD. 
 The returned values are an average speed expressed in MB/s. 
 The value returned by the option \texttt{T} is \textit{Timing cached reads} and measures the reading speed of the RAM and swap in case the memory is full. 
 The value returned by the option \texttt{t} is \textit{Timing buffered disk reads} and measures the reading speed of the HDD in the specified partition.
-The commands were run six times and the average results are presented in Table \ref{table:hdparm_res_PM} for the physical machines. 
+The commands in Listing \ref{lst:lst_hdparm} were run six times and the average results are presented in Table \ref{table:hdparm_res_PM} for the physical machines. 
 
-One can clearly see that \texttt{compute2} has the best performance regarding its hard drive, even if the difference with the two other machine is very small. 
+Based on the presented results, \texttt{compute2} shows the best performance regarding its hard drive, even if the difference with the two other machines is very small. 
 Thus, this machine was chosen as a compute node and block storage node for OpenStack.
 Thus, \texttt{compute2} is the reference machine with which benchmark results will be compared to.
 The \texttt{compute1} machine was chosen as a compute node, as it has the highest value regarding the cached reads.
@@ -95,9 +95,9 @@ The \texttt{machine4} is not part of the experiments, even if it was a potential
 \end{table}
 
 The same procedure is applied to virtual machines.
-For this, virtual machines were created on the two machines selected before, \texttt{compute1} and \texttt{compute2}.
+For this, virtual machines were created on the two machines \texttt{compute1} and \texttt{compute2}.
 We expect to obtain similar results has the virtual machines are using the same hardware as their host.
-The results are presented in Table \ref{table:hdparm_res_VM} for the virtual machines with flavors large and physical, and with and without a volume attached to it.
+The results are presented in Table \ref{table:hdparm_res_VM} for the virtual machines with flavors \textit{large} and \textit{physical}. The case where a volume is attached to the virtual machine is also considered.
 
 \begin{table}[h]
 	\centering
@@ -144,25 +144,25 @@ The results are presented in Table \ref{table:hdparm_res_VM} for the virtual mac
 	\label{table:hdparm_res_VM}
 \end{table}
 
-As one can observe, the results obtained with virtual machines are quite interesting.
-Indeed, better results regarding hard disk are obtained for \texttt{vm1} hosted on the less performant machine \texttt{compute1}, and the opposite for \texttt{vm2}.
+The results obtained with virtual machines are quite interesting.
+Indeed, better results regarding HDD are obtained for \texttt{vm1} hosted on the less performant machine \texttt{compute1}, and the opposite for \texttt{vm2}.
 The fact is that this benchmark is run on a short period of time (2-3 seconds) and 
 it's difficult to evaluate hard disk and memory performance as they are always used by the system (some running processes can affect the results). 
-Other runs have shown lower performance results (around 105 MB/s) for \texttt{vm1} for example.
+Other runs showed lower performance results (around 105 MB/s) for \texttt{vm1} for example.
 So, we can assume that both virtual machines (\texttt{vm1} and \texttt{vm2}) have quite similar performance and thus we expect to have quite similar results between them after running OLTP-Bench.
 More interesting results are shown with values followed by a star (*). 
-Indeed, they present quite high performance results when a volume (hosted on \texttt{compute2}) is attached to a virtual machine (also hosted on \texttt{compute2}).
-When \texttt{hdparm} was run, the buffered disk reads result increased between each run and didn't stay stable like all other runs.
-Thus, one can expect to observe a similar behaviour when running OLTP-Bench.
+Indeed, they present quite high performance results when a volume (hosted on \texttt{compute2}) is attached to the virtual machine (also hosted on \texttt{compute2}).
+When hdparm was performed, the timing buffered disk reads result increased between each run and did not stay stable like all other runs.
+Thus, one can expect to observe a similar behavior when running OLTP-Bench.
 As a result, \texttt{vm2} is chosen as the reference machine (for the virtual machines), as it presents better performance results regarding the cached reads.
 %%--------------- end: HDPARM
 
 
 %%--------------- begin: RAM bandwidth
-\paragraph{Bandwidth Benchmark}\mbox{}\\
-In the same way as with \texttt{hdparm}, we also benchmarked the RAM with an open source program called \textit{Bandwidth}\footnote{\url{https://zsmith.co/bandwidth.html}, 14.09.2014}. 
-This artificial benchmark was run in order to be sure that the RAM of each machine has the same performance, as we would have expected from the output of \texttt{hdparm} shown before.
-As we were only interested in the first outputs of Bandwidth, we didn't run systematically the full test. Here is an excerpt of Sequentialial reads output from \texttt{vm2} with \textit{large} flavor:
+\subsection{Bandwidth Benchmark}
+We also benchmarked the RAM with an open source program called \textit{Bandwidth}. 
+This artificial benchmark was run in order to be sure that the RAM of each machine has the same performance, as we would have expected from the output of hdparm shown in the previous section.
+As we were only interested in the first outputs of Bandwidth, we did not run systematically the full test. Here is an excerpt of Sequential reads output from \texttt{vm2} with \textit{large} flavor:
 
 \begingroup
 	\singlespacing
@@ -183,11 +183,11 @@ As we were only interested in the first outputs of Bandwidth, we didn't run syst
 \endgroup
 
 Similar results are obtained for each physical and virtual machines. 
-As it was expected, the performance doesn't change too much and tend to stay the same on each machine.
+As it was expected, the performance does not change too much and tend to stay the same on each machine.
 %%--------------- end: RAM bandwidth
 
-\paragraph{OLTP-Bench configuration}\mbox{}\\
-Now that we have our machine chosen, we can begin to run OLTP-Bench on it. 
+\subsection{OLTP-Bench configuration}
+Now that we have our machines, we can begin to run OLTP-Bench on it. 
 Before running the tests, the database has to be filled up with the different scale factor: 1, 16, 32, 64, 74, 84, 94, 104. 
 To do this we must first create the appropriate databases: tpcc\_1, tpcc\_16\_ tpcc\_32, tpcc\_64, tpcc\_74, tpcc\_84, tpcc\_94, tpcc\_104. 
 Then we can issue the command in Listing \ref{lst:lst_cmd_oltpbenchmark} from the terminal to fill up the databases.

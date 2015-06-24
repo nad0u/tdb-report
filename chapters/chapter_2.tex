@@ -57,8 +57,9 @@ In this section, the different services used for the experiments are discussed i
 \subsection{Nova}
 Nova service is responsible for creating and managing virtual machines on demand.
 Upon creating a virtual machine, the user can specify a flavor he wants to use.
-The flavor allows to set the characteristics of a virtual machine: amount of RAM, number of virtual CPUs (VCPUs), sizes of root disk, ephemeral disk and swap disk. By default, Nova provides a set of flavors and the user can create more if needed.
-Table \ref{table:flavors_list} shows characteristics for a list of the default flavors (ephemeral and swap disks are set to 0).
+The flavor allows to set the characteristics of a virtual machine: amount of RAM, number of virtual CPUs (VCPUs), sizes of root, ephemeral and swap disks.
+By default, Nova provides some built-in set of flavors and the user can create more if needed.
+Table \ref{table:flavors_list} shows characteristics of the built-in flavors (ephemeral and swap disks are set to 0).
 
 \begin{table}[h]
 	\centering
@@ -78,23 +79,23 @@ Table \ref{table:flavors_list} shows characteristics for a list of the default f
 \end{table}
 
 OpenStack provides two different services to manage storage, namely \textit{Block Storage} and \textit{Object Storage}.
-As mentioned earlier, the different OpenStack services can be installed separately, and one does not need to install all the services in order to have a virtual machine running.
+As mentioned earlier, different OpenStack services can be installed separately, and there is no need to install all the services in order to have a virtual machine running.
 By default, when creating a virtual machine, it will have its own storage (i.e. a disk or a root disk), which is mandatory in order to install an operating system on it,
 and it does not need the Block Storage service. 
-The latter will be useful when one needs to extend the storage of a virtual machine in the future. 
+However, Block Storage is required to extend the storage of a virtual machine in the future. 
 Coming back to flavors, ephemeral disk corresponds to the amount of disk space to use for the ephemeral partition when a virtual machine is launched. 
-These type of disks are bonded to the lifecycle of a virtual machine, meaning that if a virtual machine is terminated, all the data on the disk are lost. 
-However, the data persist after rebooting a virtual machine. 
+These types of disks are bounded to the lifecycle of a virtual machine, meaning that if a virtual machine is terminated, all the data on the disk is lost. 
+However, the data persists after rebooting a virtual machine.\rp{These paragraphs are very complicated for reading, because there are many things you want to write about and they are important. Still try to first write everything about one storage and then continue to another one, without back and forward referencing. Something like Openstack has this and that, this is why one needs this, this is why we need that, these are the characteristics.}
 The root disk is a special case of ephemeral disk. 
 It is used to create a root partition (/) for a virtual machine and, unlike ephemeral disk, it is included in snapshots of the virtual machine. 
 If the size of the root disk is set to 0, this means that its size will be set to the one of image containing the operating system.
 Finally, there is also the possibility to add a swap disk to the virtual machine.
 The different storage solutions of OpenStack are summarized in Table \ref{table:storage_list}.
 
-Nova is also able to handle networking thanks to the \texttt{nova-network} service. 
-In this case, we talk about \textit{Legacy Networking} rather than \textit{OpenStack Networking} which refers to the Neutron project of OpenStack. 
+Nova is also able to handle networking via the \texttt{nova-network} service.
+In this case, we talk about \textit{Legacy Networking} rather than \textit{OpenStack Networking} which refers to the Neutron project of OpenStack.
 As networking is very complex, it has been decided to split the Nova project in two parts: one project, Nova, will be exclusively responsible for virtual machines and another project, Neutron, will be exclusively responsible for networking. 
-For our experiment, it was sufficient to only use Nova to manage networking instead of Neutron.
+For our experiment, it was sufficient to only use Nova to manage networking instead of Neutron. \rp{I think we should remove legacy networking and just write about usual networking.}
 
 
 \begin{table}[h]
@@ -149,34 +150,34 @@ For our experiment, it was sufficient to only use Nova to manage networking inst
 
 
 \subsection{Glance}
-Glance is responsible for providing a registry of virtual machine images. 
-The user is then able to easily retrieve an actual image for his virtual machine. 
-An image contains an operating system image, which will be used to launch a virtual machine. 
-The uploaded images are stored on the same system that hosts the Image Service, in the directory \texttt{/var/lib/glance/images/} by default.
+Glance service is responsible for providing a registry of virtual machine images.
+A virtual machine image contains an image of an operating system, which is used to launch virtual machines. 
+The uploaded images are stored on the same system that hosts the Image Service, in the \texttt{/var/lib/glance/images/} directory by default.
 
 \subsection{Cinder}
+\rp{You already described a block storage before quite in details, please merge it here.}
 Cinder is responsible for providing persistent storage to virtual machines. 
 The persistent storage is also called volume. 
-Unlike ephemeral storage, all data that are on a volume persist when a virtual machine is terminated. 
+Unlike ephemeral storage, all data that is on a volume persists when a virtual machine is terminated. 
 This volume is similar to the \textit{Amazon Elastic Block Storage (EBS)}\footnote{\url{http://aws.amazon.com/ebs}} 
 and can be compared to an external hard disk drive (HDD) that is plugged into a computer: we say that the volume is attached to an instance. 
 In order for the attached volume to be usable, it has to be mounted and formatted. 
-After these steps, files can be stored on the volume. 
-The attached volume can also be bootable, and thus replace the root disk.
+Afterwards, files can be stored on the volume. 
+The attached volume can also be made bootable, and thus replace the root disk.
 It has to be noted that one volume can only be attached to one instance at a time, but one instance can have several volumes attached to it.
 
 
 \subsection{Keystone}
-Keystone is responsible for providing authentication and authorization for the other OpenStack services and users. 
+Keystone service is responsible for providing authentication and authorization for other OpenStack services and users. 
 Therefore, it offers \textit{User management} and \textit{Service management}. 
 
-The \textit{User management} lets one create users and tenants (or projects), the latter representing a group of users. 
-The users will be able to connect to OpenStack by giving their credentials.
+The \textit{User management} service lets one create users and tenants (or projects), the latter representing a group of users. 
+The users will be able to connect to OpenStack by supplying their credentials.
 It is easy to have an overview of all running instances for the current tenant.
 Also, it is possible to give specific roles to the users in a given tenant, so it is easy to restrict a user to only create instances for example. 
 
 In order to manage services, the administrator has to first create a user per service. 
-The \textit{Service management} provides identity, token, catalog and policy services.
+The \textit{Service management} service provides identity, token, catalog and policy services.
 
 
 % \begin{figure}[h]
@@ -187,13 +188,9 @@ The \textit{Service management} provides identity, token, catalog and policy ser
 % \end{figure} %%% [ref] http://docs.openstack.org/icehouse/install-guide/install/apt/content/keystone-concepts.html
 
 \subsection{Horizon}
-Horizon provides a nice web interface (an example is shown in Figure \ref{fig:dashboard}) that lets users and administrators interact with OpenStack services easily, instead of executing commands through a terminal. 
-However, Horizon cannot totally replace the command line tool.
-Once logged in, users can launch instances and use it directly from a web browser thanks to Virtual Network Computing (VNC) configured during the installation of OpenStack.
-
-
-
-
+Horizon provides a modern web interface (an example is shown in Figure \ref{fig:dashboard}) that lets users and administrators interact with OpenStack services easily, instead of executing commands through a terminal. 
+However, Horizon cannot completely replace the command line tool.\rp{why? you need to support your claim if you write about something.}
+Once logged in, users can launch instances and use it directly from a web browser via Virtual Network Computing (VNC) service configured during the installation of OpenStack.
 
 
 
@@ -201,7 +198,7 @@ Once logged in, users can launch instances and use it directly from a web browse
 %%--------------- section
 \section{Setup}
 \label{section_setup}
-For our experiments, OpenStack Icehouse was installed and configured on three physical machines:
+For our experiments, OpenStack Icehouse \rp{this is the first time Icehouse appears in the text, you need to specify what is it.} was installed and configured on three physical machines:
 
 {
 \singlespacing

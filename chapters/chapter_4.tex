@@ -194,20 +194,20 @@ Then we can issue the command in Listing \ref{lst:lst_cmd_oltpbenchmark} from th
 
 {
 \singlespacing
-\begin{lstlisting}[frame=single,language=bash,caption={oltp create},label={lst:lst_cmd_oltpbenchmark}]
+\begin{lstlisting}[frame=single,language=bash,caption={Database population command},label={lst:lst_cmd_oltpbenchmark}]
   $ ./oltpbenchmark -b tpcc -c config/tpcc_s1_t40_config.xml \
     --create=true --load=true
 \end{lstlisting}
 }
 
 Listing \ref{lst:lst_oltp_config} shows an example of a configuration file for OLTP-Bench. 
-First we specify the connection details to access the database, then the scale factor and finally the workload. 
+This file specifies the connection details to access the database, then the scale factor and finally the workload. 
 In the workload, only the number of terminals and the time the benchmark should last have been changed. 
 Different configuration files were created in advanced in order to facilitate the execution of the different benchmarks. 
-In order to do this, all configuration file name are following a convention, in which we specify the scale factor number (s1 in our example) and the number of terminals (t40 in our example).
-With this, a little bash script \footnote{hosted on GitHub: \url{https://github.com/nad0u/oltpbench-run}, 20.05.2015}
+In order to do this, all configuration files names are following a convention, in which we specify the scale factor number (s1 in our example) and the number of terminals (t40 in our example).
+With this, a little bash script named \textit{oltpbench-run}\footnote{\url{https://github.com/nad0u/oltpbench-run}, 20.05.2015} 
 has been created in order to launch one of the customed configuration file by specifying the scale factor as an argument (see example in Listing \ref{lst:lst_cmd_oltpsh}).
-It is possible to enter more than one argument, in case one wants to launch several benchmarks with different scale factors.
+It is possible to enter more than one argument, in case one wants to launch several benchmarks with different scale factors, one after another.
 
 {
 \singlespacing
@@ -216,8 +216,8 @@ It is possible to enter more than one argument, in case one wants to launch seve
 \end{lstlisting}
 }
 
-The command in Listing \ref{lst:lst_cmd_oltpsh} will look for the configuration file corresonding to the scale factor 1 (s1) and to 40 terminals (t40), and run the benchmark twice, saving all the data in folders which will be compressed.
-The number of terminal must be changed in the script, same goes for the machine name on which the benchmark is run.
+The command in Listing \ref{lst:lst_cmd_oltpsh} will look for the configuration file corresponding to the scale factor 1 (s1) and to 40 terminals (t40), and run the benchmark twice, saving all the data in folders which will be compressed.
+The number of terminals must be changed in the script, same goes for the machine name on which the benchmark is run.
 As a side note, this script will not create folder to store the results, they have to be created in advance and be named as \texttt{results\_sX} (X is the scale factor number).
 
 {
@@ -275,15 +275,23 @@ As a side note, this script will not create folder to store the results, they ha
 %%---------------
 \section{Softwares}
 \label{sec:softwares}
-In this section, the actual softwares and their configuration used in order to run the benchmark will be presented.
+The actual softwares and their configuration used in order to run the benchmark are presented in this section.
 
-As already explained, to run the benchmark we'll be using the OLTP-Bench project. 
-We just need to clone the project from GitHub 
+To run the benchmark we'll be using the OLTP-Bench project, which can be cloned 
 % (see Listing \ref{lst:lst_cmd_oltpb_cloning}) 
-or download the project from GitHub if Git is not installed on the system. 
-In order for OLTP-Bench to work, \textit{Ant} (version 1.9.3), \textit{Java} (version 1.7.0\_79) and \textit{MySQL} (version 5.5.43) need to be installed (see Listing \ref{lst:lst_cmd_others_install}). 
-Once done, the OLTP-Bench system can be built with \textit{Ant}.
+or downloaded from GitHub if Git is not installed on the system. 
+OLTP-Bench is written in Java and need several sotfwares to be installed in order to work (see Listing \ref{lst:lst_cmd_others_install}): 
 
+{
+\singlespacing
+\begin{itemize}
+\item \textit{OpenJDK}\footnote{\url{http://openjdk.java.net}}, an open source implementation of the Java Platform (version 1.7.0\_79)
+\item \textit{Ant}\footnote{\url{http://ant.apache.org}} aims to automate redundant operations in software development (version 1.9.3)
+\item \textit{MySQL}, a database server (version 5.5.43)
+\end{itemize}
+}
+
+After the installation, the OLTP-Bench system can be built with \textit{Ant}.
 
 {
 \singlespacing
@@ -294,11 +302,12 @@ Once done, the OLTP-Bench system can be built with \textit{Ant}.
 \end{lstlisting}
 }
 
-Instead of using the default configuration of MySQL, we'll be tuning server parameters with the help of a script, named \texttt{mysql\_start.sh} and provided on the wiki page of the OLTP-Bench project
-\footnote{\url{http://oltpbenchmark.com/experiments/dbms_config/mysql_start.sh}}. 
+Instead of using the default configuration of MySQL, we will be tuning server parameters with the help of a script, 
+named \texttt{mysql\_start.sh} and provided on the wiki page of the OLTP-Bench 
+project\footnote{\url{http://oltpbenchmark.com/experiments/dbms_config/mysql_start.sh}}. 
 This configuration is used for maximum performance. 
 Before using the script, we need to create a new folder that will hold the database instead of the one used by default by MySQL. 
-The database will be found in \texttt{/tmp/tpcc}. 
+The new database location will be found in \texttt{/tmp/tpcc}. 
 To prevent the \texttt{/tmp} folder to be cleaned after a reboot, we need to edit the file \texttt{/etc/default/rc5} and set \texttt{TMPTIME=-1}. 
 Then we need to edit the \texttt{mysql\_start.sh} script accordingly by replacing the second line by \texttt{DATADIR=/tmp/tpcc}. 
 Now we need to initialize the new MySQL data directory, shut down the current running MySQL service and start MySQL again with the script (see Listing \ref{lst:lst_cmd_mysql_start}).
@@ -312,7 +321,7 @@ Now we need to initialize the new MySQL data directory, shut down the current ru
 \end{lstlisting}
 }
 
-Once done, we are ready to start benchmarking, which will be described in the four following sections.
+Afterwards, we are ready to start benchmarking. The different benchmarks are described in details in the four following sections.
 
 
 

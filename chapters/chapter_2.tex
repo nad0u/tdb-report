@@ -78,6 +78,7 @@ Table \ref{table:flavors_list} shows characteristics of the built-in flavors (ep
 	\label{table:flavors_list}
 \end{table}
 
+
 OpenStack provides two different services to manage storage, namely \textit{Block Storage} and \textit{Object Storage}.
 As mentioned earlier, different OpenStack services can be installed separately, and there is no need to install all the services in order to have a virtual machine running.
 By default, when creating a virtual machine, it will have its own storage (i.e. a disk or a root disk), which is mandatory in order to install an operating system on it,
@@ -213,20 +214,18 @@ Installation of OpenStack was performed by following the OpenStack documentation
 
 
 \paragraph{Naming convention}\mbox{}\\
-Virtual machines created on \texttt{compute1} are called \texttt{vm1}, and those created on \texttt{compute2} are called \texttt{vm2}. Moreover, if the virtual machine has a block storage attached to it, \texttt{bs} will be attached to its name, becoming \texttt{vm1bs} for example. This convention will be followed for the rest of this report.
+Virtual machines created on the \texttt{compute1} node are called \texttt{vm1}\rp{vm1 looks like one machine, do you mean their names start with ``vm1''?}, and those created on the \texttt{compute2} node are called \texttt{vm2}. If a virtual machine has a block storage attached to it, \texttt{bs} will be attached to its name, becoming \texttt{vm1bs} for example. This convention is followed in the rest of this report.
 
 
 %%--------------- subsubsection
 \subsection{Machines}
 This section describes the hardware used for the experiments.
-We have three physical machines on which OpenStack services are installed, and several virtual machines with different flavors will be created on the physical machines.
+In total, OpenStack services were installed on three machines.
 
 
 \paragraph{Physical machines}\mbox{}\\
 The three physical machines mentioned in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
-Each machine uses a 3.4 GHz Intel Core i7-3770. 
-There is 16GB of RAM, $4\times4$GB DIMM DDR3 Synchronous 1600MHz. 
-They have a Western Digital HDD of 500GB. 
+Each machine has an i7 3.4GHz Intel CPU, 16GB of RAM ($4\times4$GB DIMM DDR3 Synchronous 1600MHz) and a Western Digital HDD of 500GB. 
 In the case of \texttt{compute2}, a partition of 100GB (93GB after partioning with \textit{GParted}\footnote{Graphical editor for managing disk partitions (\url{http://gparted.org})}) has been created in order to have space for the Block Storage service of OpenStack instead of a full disk recommended by the OpenStack documentation. 
 Physical and logical volumes have been created with the Logical Volume Manager (LVM) on the partition.
 The machines are running Ubuntu 14.04 LTS 64 bit operating system. 

@@ -226,21 +226,20 @@ In total, OpenStack services were installed on three machines.
 \paragraph{Physical machines}\mbox{}\\
 The three physical machines mentioned in Section \ref{section_setup} are HP Compaq Elite 8300 SFF with a 64-bit architecture. 
 Each machine has an i7 3.4GHz Intel CPU, 16GB of RAM ($4\times4$GB DIMM DDR3 Synchronous 1600MHz) and a Western Digital HDD of 500GB. 
-In the case of \texttt{compute2}, a partition of 100GB (93GB after partioning with \textit{GParted}\footnote{Graphical editor for managing disk partitions (\url{http://gparted.org})}) has been created in order to have space for the Block Storage service of OpenStack instead of a full disk recommended by the OpenStack documentation. 
-Physical and logical volumes have been created with the Logical Volume Manager (LVM) on the partition.
-The machines are running Ubuntu 14.04 LTS 64 bit operating system. 
-To create and run virtual machines, the open source hypervisor Kernel-based Virtual Machine (KVM) is used by the Compute Service. Concerning the network, each machine only have one interface card, instead of two interface cards recommended by the OpenStack documentation.
-
+In the case of \texttt{compute2}, a partition of 100GB (93GB after partitioning with \textit{GParted}\footnote{Graphical editor for managing disk partitions (\url{http://gparted.org})}) was created in order to reserve space for the Block Storage service of OpenStack instead of a full disk recommended by the OpenStack documentation. 
+Physical and logical volumes were created with the Logical Volume Manager (LVM) on the partition.
+The machines are running Ubuntu 14.04 LTS 64-bit operating system. 
+To create and run virtual machines, the open source hypervisor Kernel-based Virtual Machine (KVM) is used by the Compute Service. Each machine had one network interface card, instead of two interface cards recommended by the OpenStack documentation.
 
 
 \paragraph{Virtual machines}\mbox{}\\
-The virtual machines are created on \texttt{compute1} and \texttt{compute2} only and are using a cloud image\footnote{Ubuntu cloud images can be found here: \url{https://cloud-images.ubuntu.com}} of Ubuntu Server 14.04 LTS made to run on cloud platforms like OpenStack. 
-A new flavor called \textit{physical} has been created and the flavor \textit{large} has been modified accordingly. 
+The virtual machines are created on \texttt{compute1} and \texttt{compute2} nodes only and are running a cloud image\footnote{Ubuntu cloud images can be found here: \url{https://cloud-images.ubuntu.com}} of Ubuntu Server 14.04 LTS prepared to run on cloud platforms like OpenStack. 
+A new flavor called \textit{physical} has been created and the flavor \textit{large} has been modified accordingly.\rp{tell why you need to create and modify flavors.}
 The updated list of flavors is now represented on Table \ref{table:flavors_list_2}. 
-For the experiments, only \textit{large} and \textit{physical} flavors are relevant. 
-With the \textit{physical} flavor, we try to have similar characteristics as a physical machine in order to compare them. 
+For the experiments, only \textit{large} and \textit{physical} flavors were used. 
+With the \textit{physical} flavor, we try to have similar characteristics to a physical machine in order to compare them. 
 In this context, only one virtual machine with \textit{physical} flavor will be running at a time. 
-With the \textit{large} flavor, we try to have half of characteristics of a physical machine in order to have enough resources to run two virtual machines at the same time to test isolation later.
+With the \textit{large} flavor, we try to have half of characteristics of a physical machine in order to have enough resources to run two virtual machines at the same time to benchmark application isolation.
 
 \begin{table}[h]
 	\centering
@@ -263,7 +262,8 @@ With the \textit{large} flavor, we try to have half of characteristics of a phys
 
 %%--------------- subsubsection
 \subsection{OpenStack services} % TODO: or Components installation (?)
-In this section, we will briefly explained which OpenStack services are installed on which physical machines and their purposes. The repartition of the different components is shown in Figure \ref{fig:os_arch}.
+In this section, we briefly explain which OpenStack services are installed on what physical machines and their purposes.
+The repartition of the different components is shown in Figure \ref{fig:os_arch}.
 
 \begin{figure}[h]
 	\centering
@@ -272,17 +272,18 @@ In this section, we will briefly explained which OpenStack services are installe
 	\label{fig:os_arch}
 \end{figure}
 
-The controller node is the heart of our OpenStack architecture, and thus all the different services APIs (Application Programming Interface) are installed on it. 
-Indeed, Keystone is there to manage users, and thus OpenStack services, as a user is created for each service. 
-Each request made by a service is handled by Keystone first: the service must authenticate against Keystone, if this succeeds, then permissions are also checked, and if this is okay, the request is accepted and further actions can be carried on by the service. 
-Glance (\textit{glance-api} and \textit{glance-registry}) is also installed on the controller node. 
-This means that all actions regarding images (creation, edition, deletion) are handled by the controller node. 
-Moreover all the different images are stored on it.
+The controller node is the heart of our OpenStack architecture, and thus all the different service APIs (Application Programming Interface) are installed on it. 
+Keystone manages user accounts, and thus OpenStack services, as a new user is created for each service. 
+Each request made by a service is handled by Keystone first: the service must authenticate against Keystone.
+If this succeeds, then permissions are also checked, and if the permissions are sufficient, the request is accepted and further actions can be carried out by the service. 
+Glance (\textit{glance-api} and \textit{glance-registry}) are also installed on the controller node. 
+This means that all actions regarding OS images (creation, edition, deletion) are handled by the controller node.
+Moreover all the different OS images are stored on it.
 A web interface makes OpenStack easier to use, and for that Horizon is also installed on the controller node.
 %, letting one access OpenStack with the following link \url{http://diufpc117.unifr.ch/horizon}\footnote{Access restricted to unifr network}. 
 An overview of the dashboard is shown in Figure \ref{fig:dashboard}. 
-It offers access to each service installed, and as an administrator, it is possible to manage everything. 
-To create, edit and delete an instance, a volume or an image, the user will access these services through the \textit{Project} tab.
+It offers access to each service installed, and, as an administrator, it is possible to manage everything. 
+To create, edit or delete an instance, a volume or an image, the user have to access these services through the \textit{Project} tab.
 %
 \begin{figure}[h]
 	\centering
@@ -292,19 +293,19 @@ To create, edit and delete an instance, a volume or an image, the user will acce
 \end{figure}
 %
 %TODO: nova -> describe each service?
-In order to be able to create virtual machines, some components of Nova have to be installed on the controller node. These components are there for management purpose. 
+In order to be able to create virtual machines, some components of Nova have to be installed on the controller node. These components exist for management purposes. 
 Among them, we can mention \textit{nova-api}, \textit{nova-cert}, \textit{nova-consoleauth} and \textit{nova-novncproxy} for accessing an instance via VNC, and \textit{nova-scheduler} to determine on which physical machine an instance will run.
-Likewise, \textit{cinder-api}, \textit{cinder-volume} and \textit{cinder-scheduler} components of Cinder are installed on the controller for management purpose.
-As each OpenStack needs to store some information, a database is necessary. 
+Likewise, \textit{cinder-api}, \textit{cinder-volume} and \textit{cinder-scheduler} components of the Cinder service are installed on the controller node for management purpose.
+As each OpenStack service needs to store some information, a database is necessary. 
 For this a \textit{MySQL}\footnote{\url{http://www.mysql.com}} database is installed and configured on the controller node. 
 On any additional node (in our case, on \texttt{compute1} and \texttt{compute2}), only a MySQL client is installed to access the database hosted on the controller node.
 %TODO: messaging system?
 
 
-Compared to the controller node, \texttt{compute1} and \texttt{compute2} are less complex and do not need to run as many services as the controller. 
-For \texttt{compute1}, as its role is to create and host the virtual machines, other components of the Nova project are needed: \textit{nova-compute}, which is responsible for creating and terminating virtual machines, and \textit{nova-network}, which is responsible for managing the network (bridging, updating iptables rules) for the virtual machines. 
+Compared to the controller node, \texttt{compute1} and \texttt{compute2} are less complex and do not need to run as many services as the controller.
+For \texttt{compute1}, as its role is to create and host the virtual machines, other components of the Nova project are needed: \textit{nova-compute}, which is responsible for creating and terminating virtual machines, and \textit{nova-network}, which is responsible for managing the network (bridging, updating iptables rules) for the virtual machines.\rp{what is ``other components''? Are there any additional components? Please list clean and explicitly.}
 
-Finally, \texttt{compute2} has the same components as \texttt{compute1} regarding the Nova project. 
-As this node also needs to take care of the creation and deletion of volumes, the \textit{cinder-volume} component of the Cinder project is present on the node. 
+Finally, \texttt{compute2} has the same set of components as \texttt{compute1} regarding the Nova project. 
+As this node also needs to take care of the creation and deletion of volumes, the \textit{cinder-volume} component of the Cinder service is installed on the node. 
 
 

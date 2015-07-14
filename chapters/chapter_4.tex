@@ -4,23 +4,24 @@
 
 \chapter{Experiments}
 This chapter presents the practical part of the bachelor work.
-First, a general description of how the experiment organization is presented.
-Then, the choice of the different machines will be discussed in the Preliminary section.
+% First, a general description of how the experiment organization is presented. TODO
+
+Then, the choice of the different machines will be discussed in Section \ref{sec:preliminary}.
 For this choice, different little benchmarks have been used, which will be discussed.
-Then, the configuration of the different physical and virtual machines will be presented in details, in order for these experiments to be reproductible.
-The configuration includes the softwares installation and the tuning of MySQL.
+Then, the configuration of the different physical and virtual machines will be presented in details, in order for these experiments to be reproducible.
+The configuration includes the software installation and the tuning of MySQL database.
 Finally, the different tests and their results will be discussed.
 
 
 %%--------------- section
 \section{Description and procedure}
-A database benchmark, named TPC-C, has been chosen in order to evaluate the performance of OpenStack.
+A TPC-C database benchmark has been chosen in order to evaluate the performance of OpenStack.
 The OLTP-Bench project has been used to run TPC-C benchmark on the different physical and virtual machines running a MySQL server.
 The virtual machines are created with different configurations (flavors, volume attached or not). 
 It is expected to see the difference in performance for these different configurations and therefore the performance of OpenStack.
-These results will be compared to the result obtained when running OLTP-Bench on the chosen physical machine (Section \ref{sec:preliminary} shows how this machine is chosen).
+These results will be compared to the results obtained when running OLTP-Bench on the chosen physical machine (Section \ref{sec:preliminary} shows how this machine is chosen).
 
-The tests are presented in four different phases.
+The tests are conducted in four different phases.
 In the first phase, OLTP-Bench is run on the chosen physical machine.
 In the second phase, it is run on virtual machines with different flavors.
 The third phase is similar to the second one, except that a volume is attached to the virtual machine.
@@ -36,14 +37,14 @@ The last phase aims to test isolation, which is done by running OLTP-Bench on tw
 \label{sec:preliminary}
 Before beginning benchmarking with OLTP-Bench, we need to have a point of comparison, a machine with which we can compare all the results obtained. 
 In order to choose this machine, the \textit{hdparm}\footnote{\url{http://linux.die.net/man/8/hdparm}} and \textit{Bandwidth}\footnote{\url{https://zsmith.co/bandwidth.html}} benchmark have been used. 
-These two little benchmarks will evaluate physical machine components (hard disk and memory).
+These two benchmarks will evaluate physical machine components (hard disk and memory).
 Based on their results, a reference machine will be chosen and the experiments will be carried on.
 
 
 \subsection{HDPARM Benchmark}
 %%--------------- begin: HDPARM
 \textit{Hdparm} is a command line program on Linux systems and offers a great number of parameters that let one test the hardware of a machine in details. 
-It should be noted that some parameters can harm a computer and therefore have not been used for this experiment. 
+It should be noted that the use of some parameters can damage a computer and therefore they have not been used for this experiment. 
 Running the benchmark is pretty straightforward and is shown in Listing \ref{lst:lst_hdparm}.
 In order to issue these commands, one must be root or use the command with \texttt{sudo}.
 
@@ -59,14 +60,14 @@ In order to issue these commands, one must be root or use the command with \text
 \end{lstlisting}
 }
 
-The options \texttt{-Tt} allow to benchmark the reading speed of the HDD and the reading speed of the memory (RAM) without accessing the HDD. 
-The returned values are an average speed expressed in MB/s. 
+The options \texttt{-Tt} instruct to benchmark the reading speed of the HDD and the reading speed of the memory (RAM) without accessing the HDD. 
+The result returned by the benchmark is the reading average speed expressed in MB/s. 
 The value returned by the option \texttt{T} is \textit{Timing cached reads} and measures the reading speed of the RAM and swap in case the memory is full. 
 The value returned by the option \texttt{t} is \textit{Timing buffered disk reads} and measures the reading speed of the HDD in the specified partition.
 The commands in Listing \ref{lst:lst_hdparm} were run six times and the average results are presented in Table \ref{table:hdparm_res_PM} for the physical machines. 
 
 Based on the presented results, \texttt{compute2} shows the best performance regarding its hard drive, even if the difference with the two other machines is very small. 
-Thus, this machine was chosen as a compute node and block storage node for OpenStack.
+Thereby, this machine was chosen as a compute node and block storage node for OpenStack.
 Thus, \texttt{compute2} is the reference machine with which benchmark results will be compared to.
 The \texttt{compute1} machine was chosen as a compute node, as it has the highest value regarding the cached reads.
 The \texttt{machine4} is not part of the experiments, even if it was a potential candidate from the results obtained in Table \ref{table:hdparm_res_PM}.
@@ -96,8 +97,8 @@ The \texttt{machine4} is not part of the experiments, even if it was a potential
 \end{table}
 
 The same procedure is applied to virtual machines.
-For this, virtual machines were created on the two machines \texttt{compute1} and \texttt{compute2}.
-We expect to obtain similar results has the virtual machines are using the same hardware as their host.
+For this, virtual machines were created on the two nodes: \texttt{compute1} and \texttt{compute2}.
+We expect to obtain similar results as the virtual machines are using the same hardware as their host.
 The results are presented in Table \ref{table:hdparm_res_VM} for the virtual machines with flavors \textit{large} and \textit{physical}. The case where a volume is attached to the virtual machine is also considered.
 
 \begin{table}[h]
@@ -146,7 +147,7 @@ The results are presented in Table \ref{table:hdparm_res_VM} for the virtual mac
 \end{table}
 
 The results obtained with virtual machines are quite interesting.
-Indeed, better results regarding HDD are obtained for \texttt{vm1} hosted on the less performant machine \texttt{compute1}, and the opposite for \texttt{vm2}.
+Indeed, better results regarding HDD are obtained for \texttt{vm1} hosted on the less performant machine \texttt{compute1}, whereas poorer results are obtained for \texttt{vm2}.
 The fact is that this benchmark is run on a short period of time (2-3 seconds) and 
 it's difficult to evaluate hard disk and memory performance as they are always used by the system (some running processes can affect the results). 
 Other runs showed lower performance results (around 105 MB/s) for \texttt{vm1} for example.
@@ -163,12 +164,13 @@ As a result, \texttt{vm2} is chosen as the reference machine (for the virtual ma
 \subsection{Bandwidth Benchmark}
 We also benchmarked the RAM with an open source program called \textit{Bandwidth}. 
 This artificial benchmark was run in order to be sure that the RAM of each machine has the same performance, as we would have expected from the output of hdparm shown in the previous section.
-As we were only interested in the first outputs of Bandwidth, we did not run systematically the full test. Here is an excerpt of Sequential reads output from \texttt{vm2} with \textit{large} flavor:
+As we were only interested in the first outputs of Bandwidth, we did not run systematically the full test. Here is an excerpt of Sequential reads output from \texttt{vm2} with \textit{large} flavor after executing the command shown on the first line:
 
 \begingroup
 	\singlespacing
     \fontsize{10pt}{12pt}\selectfont
 \begin{verbatim}
+	$ sudo nice -n -2 ./bandwidth64
     ...
     Sequential read (64-bit LODSQ), size = 128 B, loops = 241172480, 5879.4 MB/s
     Sequential read (64-bit LODSQ), size = 256 B, loops = 174587904, 8523.1 MB/s
@@ -204,10 +206,10 @@ Then we can issue the command in Listing \ref{lst:lst_cmd_oltpbenchmark} from th
 Listing \ref{lst:lst_oltp_config} shows an example of a configuration file for OLTP-Bench. 
 This file specifies the connection details to access the database, then the scale factor and finally the workload. 
 In the workload, only the number of terminals and the time the benchmark should last have been changed. 
-Different configuration files were created in advanced in order to facilitate the execution of the different benchmarks. 
+Different configuration files were created in advance in order to facilitate the execution of the different benchmarks. 
 In order to do this, all configuration files names are following a convention, in which we specify the scale factor number (s1 in our example) and the number of terminals (t40 in our example).
 With this, a little bash script named \textit{oltpbench-run}\footnote{\url{https://github.com/nad0u/oltpbench-run}, 20.05.2015} 
-has been created in order to launch one of the customed configuration file by specifying the scale factor as an argument (see example in Listing \ref{lst:lst_cmd_oltpsh}).
+has been created in order to launch one of the created configuration files by specifying the scale factor as an argument (see example in Listing \ref{lst:lst_cmd_oltpsh}).
 It is possible to enter more than one argument, in case one wants to launch several benchmarks with different scale factors, one after another.
 
 {
@@ -274,20 +276,20 @@ As a side note, this script will not create folder to store the results, they ha
 %%---------------
 %%--------------- section
 %%---------------
-\section{Softwares}
+\section{Software}
 \label{sec:softwares}
-The actual softwares and their configuration used in order to run the benchmark are presented in this section.
+The actual software and their configuration used in order to run the benchmark are presented in this section.
 
-To run the benchmark we'll be using the OLTP-Bench project, which can be cloned 
+To run the benchmark we will be using the OLTP-Bench project, which can be cloned 
 % (see Listing \ref{lst:lst_cmd_oltpb_cloning}) 
 or downloaded from GitHub if Git is not installed on the system. 
-OLTP-Bench is written in Java and need several sotfwares to be installed in order to work (see Listing \ref{lst:lst_cmd_others_install}): 
+OLTP-Bench is written in Java and need several sotfware to be installed in order to work (see Listing \ref{lst:lst_cmd_others_install}): 
 
 {
 \singlespacing
 \begin{itemize}
 \item \textit{OpenJDK}\footnote{\url{http://openjdk.java.net}}, an open source implementation of the Java Platform (version 1.7.0\_79)
-\item \textit{Ant}\footnote{\url{http://ant.apache.org}} aims to automate redundant operations in software development (version 1.9.3)
+\item \textit{Ant}\footnote{\url{http://ant.apache.org}} automates redundant operations in software development (version 1.9.3)
 \item \textit{MySQL}, a database server (version 5.5.43)
 \end{itemize}
 }
@@ -303,8 +305,8 @@ After the installation, the OLTP-Bench system can be built with \textit{Ant}.
 \end{lstlisting}
 }
 
-Instead of using the default configuration of MySQL, we will be tuning server parameters with the help of a script, 
-named \texttt{mysql\_start.sh} and provided on the wiki page of the OLTP-Bench 
+Instead of using the default configuration of MySQL, we will tune server parameters with the help of a script, 
+named \texttt{mysql\_start.sh}, provided on the wiki page of the OLTP-Bench 
 project\footnote{\url{http://oltpbenchmark.com/experiments/dbms_config/mysql_start.sh}}. 
 This configuration is used for maximum performance. 
 Before using the script, we need to create a new folder that will hold the database instead of the one used by default by MySQL. 
@@ -382,10 +384,9 @@ The benchmark has been excuted two times, each run lasting 1800 seconds.
 	\label{fig:ph115_t40}
 \end{figure}
 
-As it can be seen in Figure \ref{fig:ph115_t40}, when the scale factor increases the throughput decreases. 
+As it can be seen in Figure \ref{fig:ph115_t40}, as the scale factor increases the throughput decreases. 
 This behaviour is normal, as with a larger scale factor the database becomes bigger, and thus there is a lot more data to process and this will reduce the throughput of the system. 
 For scale factor 84, we can see a little drop in the throughput. 
-To be sure that this is not just a "bad luck" during the benchmark, more runs can be done.
 
 The throughput represented in the graph is computed by taking the 3600 throughput values ($2\times1800$ output values) of the OLTP-Bench output and calculating the first quartile $Q1$ and the third quartile $Q3$. 
 The difference of $Q3$ and $Q1$ corresponds to the the interquartile range (IQR), which is a measure of statistical dispersion (see Equation \ref{eq:eq_iqr}). 
@@ -406,11 +407,11 @@ The final throughput will be computed by taking only output values between $Q1$ 
 \section{Phase 2 - Virtual machine without volume}
 \label{section:phase2}
 
-Like for the physical machine, databases will be created and populated before running OLTP-Bench. 
-As the process of filling the databases is very long (especially with greater scale factors), snapshots of the virtual machine are taken.
+As for the physical machine, databases will be created and populated before running OLTP-Bench. 
+Since the process of filling the databases is very long (especially for large scale factors), snapshots of the virtual machine are taken.
 All databases cannot be stored in only one virtual machine, which is made of a disk of 30 GB (as defined in Table \ref{table:flavors_list_2}).
 So there will be two snapshots: one with databases with scale factors from 1 to 74, and the second one with the rest.
-These snapshots are respectively named \textit{snap\_trusty\_16-74\_oltpsh\_} and \textit{snap\_trusty\_84-104\_oltpsh\_} on the web interface of OpenStack.
+These snapshots are named \textit{snap\_trusty\_16-74\_oltpsh\_} and \textit{snap\_trusty\_84-104\_oltpsh\_} respectively on the web interface of OpenStack.
 This way, it will be easy to destroy and create a new virtual machine with a different flavor and have the populated database ready to be used.
 
 For this phase, OLTP-Bench was run on two different virtual machines with different flavors, \texttt{vm2} \textit{large} and \texttt{vm2} \textit{physical}. 
@@ -534,7 +535,7 @@ In particular, we want to see what happens when we have both the virtual machine
 
 Like before, \textit{large} and \textit{physical} flavor will be used, and in the case of \textit{large} flavor, the benchmark will be run with 1 and 40 terminals. 
 We will first discuss the case of \textit{large} flavor, whose results are shown in Figures \ref{fig:vm115_large_wbs} and \ref{fig:vm116_large_wbs}.
-At first glance, we can see that both graphs have the same shape. However this shape differs from the results obtained in Phase 2. 
+At first glance, we can see that both graphs have the same shape. However, this shape differs from the results obtained in Phase 2. 
 In the case of 40 terminals, we see that the throughput increases from scale factor 1 to 16, instead of decreasing like before. 
 Moreover, in the case of scale factor 1, we can see that the throughput is at least around 350 req/s and goes up to around 430 req/s in the case \texttt{vm2bs}.
 Thus, compared to \texttt{compute2}, we can reach a higher throughput.
@@ -585,8 +586,8 @@ Indeed, when several virtual machines are hosted on the same physical machine, t
 Testing isolation allows us to verify that a virtual machine is not interfering (or not interfering too much) with another virtual machine running on the same host. 
 It must also be the case when two virtual machines are running on two different hosts. 
 Thus, a good isolation allows to keep individual performance of each virtual machine more or less intact.
-The isolation is particularily important in \textit{Cloud Computing} as each hardware resources can be rented on demand. 
-Each customer that rented a virtual machine expects it to run at full power (the power he paid for), and so other virtual machines should not interfere with this rented one.
+The isolation is particularily important in \textit{Cloud Computing} as each hardware resource can be rented on demand. 
+The customer that rented a virtual machine expects it to run at full power (the power he paid for), and so other virtual machines should not interfere with the rented one.
 
 \begin{figure}[h]
 	\centering
@@ -596,7 +597,7 @@ Each customer that rented a virtual machine expects it to run at full power (the
 \end{figure}
 
 In order to test isolation, we will consider the case where we have two virtual machines, \texttt{vm1} and \texttt{vm2}, running on two different physical machines, \texttt{compute1} and \texttt{compute2} respectively. 
-Both virtual machines are created with \textit{large} flavor and have a volume attached to them. 
+Both virtual machines are created with \textit{large} flavor and have a volume (hosted on \textit{compute2}) attached to them. 
 OLTP-Bench is executed at the same time on both virtual machines. 
 As before, we are considering two different number of terminals: 1 and 40. 
 The results of the experiments are shown in Figure \ref{fig:vm_large_iso}.
@@ -604,7 +605,7 @@ The results of the experiments are shown in Figure \ref{fig:vm_large_iso}.
 Unfortunately, this test does not return good results.
 Indeed, almost all throughput lie below 200 req/s, which is clearly worse than all results obtained until now.
 This can be explained by the fact that we do not have a dedicated machine for managing the volumes, a Block Storage node, in our OpenStack architecture.
-This means that the two virtual machines try to access the same physical hard drive (where the database resides) during the benchmark, even if there is two logical volumes.
+This means that the two virtual machines try to access the same physical hard drive (where the database resides) during the benchmark, even if there are two logical volumes.
 
 In order to better test isolation, one must consider having a dedicated machine for managing volume instead.
 One can also try to run the same benchmark, without using volumes.

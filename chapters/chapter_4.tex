@@ -369,9 +369,9 @@ The size of each filled database is shown in Table \ref{table:tab_oltpb_scalefac
 
 Once the databases populated, we can run the benchmarks by using the \texttt{oltpbench-run} script. 
 In order to maximize performance, all the OpenStack services will be shut down during the tests. 
-Moreover, the machines will be rebooted after scale factor tests. 
+Moreover, the machines will be rebooted after each scale factor test. 
 It has to be noted that after each run, the database will grow as many writes occur. 
-Despite this, the databases won't be refilled after each tests. 
+Despite this, the databases will not be refilled after each test. 
 Also, these tests were done with 40 terminals. 
 The benchmark has been excuted two times, each run lasting 1800 seconds.
 
@@ -385,7 +385,7 @@ The benchmark has been excuted two times, each run lasting 1800 seconds.
 As it can be seen in Figure \ref{fig:ph115_t40}, when the scale factor increases the throughput decreases. 
 This behaviour is normal, as with a larger scale factor the database becomes bigger, and thus there is a lot more data to process and this will reduce the throughput of the system. 
 For scale factor 84, we can see a little drop in the throughput. 
-To be sure that this is just a "bad luck" during the benchmark, more runs can be done.
+To be sure that this is not just a "bad luck" during the benchmark, more runs can be done.
 
 The throughput represented in the graph is computed by taking the 3600 throughput values ($2\times1800$ output values) of the OLTP-Bench output and calculating the first quartile $Q1$ and the third quartile $Q3$. 
 The difference of $Q3$ and $Q1$ corresponds to the the interquartile range (IQR), which is a measure of statistical dispersion (see Equation \ref{eq:eq_iqr}). 
@@ -407,17 +407,17 @@ The final throughput will be computed by taking only output values between $Q1$ 
 \label{section:phase2}
 
 Like for the physical machine, databases will be created and populated before running OLTP-Bench. 
-As the process of filling the databases is very long (especially with greater scale factors), snapshot of the virtual machine is taken.
+As the process of filling the databases is very long (especially with greater scale factors), snapshots of the virtual machine are taken.
 All databases cannot be stored in only one virtual machine, which is made of a disk of 30 GB (as defined in Table \ref{table:flavors_list_2}).
 So there will be two snapshots: one with databases with scale factors from 1 to 74, and the second one with the rest.
 These snapshots are respectively named \textit{snap\_trusty\_16-74\_oltpsh\_} and \textit{snap\_trusty\_84-104\_oltpsh\_} on the web interface of OpenStack.
-This way, it will be easy to destroy and create a new virtual machine with a different flavor and the populated database ready.
+This way, it will be easy to destroy and create a new virtual machine with a different flavor and have the populated database ready to be used.
 
 For this phase, OLTP-Bench was run on two different virtual machines with different flavors, \texttt{vm2} \textit{large} and \texttt{vm2} \textit{physical}. 
-For the virtual machine with large flavor, OLTP-Bench was run with two different values for the terminals parameter: 1 and 40.
+For the virtual machine with \textit{large} flavor, OLTP-Bench was run with two different values for the terminals parameter: 1 and 40.
 In the case of the physical flavor, OLTP-Bench was run only with 40 terminals.
-Another thing to take care before running the benchmark on any \textit{large} flavored virtual machine: it is important to change the buffer pool size in the \texttt{mysql\_start} script. 
-Otherwise, this will produce error as the buffer pool is as big as the RAM on the virtual machine.
+Another thing to take care before running the benchmark on any \textit{large} flavor virtual machine: it is important to change the buffer pool size in the \texttt{mysql\_start} script. 
+Otherwise, this will produce an error as the buffer pool is as big as the RAM on the virtual machine.
 The new value is set to 6G instead of 8G: \texttt{--innodb-buffer-pool-size=6G}.
 
 \begin{figure}[h]
@@ -437,11 +437,11 @@ The new value is set to 6G instead of 8G: \texttt{--innodb-buffer-pool-size=6G}.
 	\end{minipage}
 \end{figure}
 
-As it can be seen in Figure \ref{fig:vm115_large_wobs} and \ref{fig:vm115_physical_wobs}, the throughput with 40 terminals are quite similar between the \textit{large} and \textit{physical} flavors. 
+As it can be seen in Figure \ref{fig:vm115_large_wobs} and \ref{fig:vm115_physical_wobs}, the throughputs with 40 terminals are quite similar between the \textit{large} and \textit{physical} flavors. 
 However, with scale factor 16, we observe a greater throughput loss with the \textit{physical} flavor compared to the \textit{large} flavor. 
 Also, like with the results on \texttt{compute2}, we observe again a drop at scale factor 84, especially with the \textit{physical} flavor. 
-It seems to be a coincidence, because an analysis of the data (plotting througput over time) shows that the benchmark crashes at some point (i.e. there is 0 values for quite some time).
-This behavior appears quite frequently over all the different runs made, but in some case, like scale factor 84, this has a greater impact.
+It seems to be a coincidence, because an analysis of the data (plotting througput over time in seconds) shows that the benchmark crashes at some point (i.e. there is 0 values for quite some time).
+This behavior appears quite frequently over all the different runs made, but in some case, like with scale factor 84, it has a greater impact.
 An example of such a crash is shown in Figure \ref{fig:vm115_physical_wobs_crash} (blue corresponds to the first run and red to the seconde run).
 The crash begins after 450 seconds and lasts 150 seconds approximately.
 
@@ -456,7 +456,7 @@ Concerning the results obtained with 1 terminal, we can see that they are quite 
 It can be interesting to run the same benchmark with different values for the number of terminals in order to see where we have better performance.
 
 Finally, one can observe that in general, better performances are achieved on \texttt{compute2} with a peak at 400 req/s for scale factor 1.
-So, for now, OpenStack doesn't seems to beat performance of a physical machine, but it is quite close to.
+So, for now, OpenStack does not seem to beat the performance of a physical machine.
 
 
 
@@ -468,7 +468,9 @@ So, for now, OpenStack doesn't seems to beat performance of a physical machine, 
 %%---------------
 \section{Phase 3 - Virtual machine with volume}
 
-During this phase, the same tests as in Section \ref{section:phase2} will be run, but instead of using the ephemeral storage that comes with each virtual machine, we'll be using the OpenStack service for storage, known as Block Storage. The Block Storage service lets us create volume that can be seen as an external HDD that is attached to a computer. So basically, instead of storing the database in the default HDD of the virtual machine, it will be stored on the attached volume.
+During this phase, the same tests as in Section \ref{section:phase2} will be run, but instead of using the ephemeral storage that comes with each virtual machine, we will be using the OpenStack service for storage, known as Block Storage. 
+The Block Storage service lets us create a volume that can be seen as an external HDD that is attached to a computer. 
+So basically, instead of storing the database in the default HDD of the virtual machine, it will be stored on the attached volume.
 
 Before beginning the tests, some changes have to be made in order for everything to work. 
 After changing the database location (moved on the attached volume), the AppArmor application will prevent MySQL to start, if it is not well configured. 
@@ -476,9 +478,9 @@ This application is installed by default on Ubuntu system, and is \textquote{\te
 \footnote{\url{https://blogs.oracle.
 com/jsmyth/entry/apparmor_and_mysql}, 17.02.2015}. 
 As we are going to move the database on the attached volume, this new location must be known by the AppArmor application. 
-Until now we didn't need to make any changes, as by default MySQL has access to the \texttt{/tmp} folder on Unix based system
+Until now we did not need to make any changes, as by default MySQL has access to the \texttt{/tmp} folder on Unix based systems
 \footnote{\url{http://dev.mysql.com/doc/refman/5.7/en/temporary-files.html}, 17.02.2015}. 
-To attach a volume to the virtual machine, we need to create a new folder \texttt{/myspace} on which it will be mounted. 
+To attach a volume to the virtual machine, we need to create a new directory \texttt{/myspace} on which it will be mounted. 
 The different commands to mount and move the database are shown in Listing \ref{lst:lst_cmd_mount_movedb}.
 
 {
@@ -545,9 +547,9 @@ Finally, as to be expected, the results for 1 terminal are constant and there is
 Now, comparing \texttt{vm2bs} and \texttt{vm1bs} results, we see that we obtain slightly better performance results for \texttt{vm2bs}, especially for scale factors 16 and 32. 
 So one can say that having an attached volume hosted on the same physical machine as the virtual machine potentially increases the performance in the case of \textit{large} flavor.
 
-For the case of \textit{physical} flavor, one can observe a similar shape as we had in Figures \ref{fig:vm115_large_wbs} and \ref{fig:vm116_large_wbs}, except that the throuhput drops rapidly under 300 req/s for scale factore 32.
+For the case of \textit{physical} flavor, one can observe a similar shape as we had in Figures \ref{fig:vm115_large_wbs} and \ref{fig:vm116_large_wbs}, except that the throuhput drops rapidly under 300 req/s for scale factor 32.
 And as expected, the performance is way better than what was obtained in Phase 2 (see Figure \ref{fig:vm115_large_wobs}). 
-Indeed, throughputs are always above 200.
+Indeed, throughputs are always above 200 req/s.
 
 \begin{figure}[h]
 	\begin{minipage}{.5\textwidth}
@@ -568,7 +570,7 @@ Indeed, throughputs are always above 200.
 Finally, as we can see, there is very little difference in performance between \textit{large} and \textit{physical} flavor when a volume is attached to the virtual machine. 
 However, we obtain better performance compared to virtual machines without volume (see Figures \ref{fig:vm115_large_wobs} and \ref{fig:vm115_physical_wobs}). 
 To conclude, we can say that having a volume attached to a virtual machine really improve the overall performance of the system.
-Apparently, OpenStack is doing a great job with volumes managements.
+Apparently, OpenStack is doing a great job with volumes management.
 
 
 
@@ -594,17 +596,17 @@ Each customer that rented a virtual machine expects it to run at full power (the
 \end{figure}
 
 In order to test isolation, we will consider the case where we have two virtual machines, \texttt{vm1} and \texttt{vm2}, running on two different physical machines, \texttt{compute1} and \texttt{compute2} respectively. 
-Both virutal machines are created with \textit{large} flavor and have a volume attached to them. 
+Both virtual machines are created with \textit{large} flavor and have a volume attached to them. 
 OLTP-Bench is executed at the same time on both virtual machines. 
-As before we are considering two different number of terminals, 1 and 40. 
+As before, we are considering two different number of terminals: 1 and 40. 
 The results of the experiments are shown in Figure \ref{fig:vm_large_iso}.
 
-Unfortunately, this test doesn't return good results.
+Unfortunately, this test does not return good results.
 Indeed, almost all throughput lie below 200 req/s, which is clearly worse than all results obtained until now.
-This can be explained by the fact that we don't have a dedicated machine for managing the volume, a Block Storage node, in our OpenStack architecture.
+This can be explained by the fact that we do not have a dedicated machine for managing the volumes, a Block Storage node, in our OpenStack architecture.
 This means that the two virtual machines try to access the same physical hard drive (where the database resides) during the benchmark, even if there is two logical volumes.
 
-In order to better test isolation, one must consider having a dedicating machine for managing volume instead.
+In order to better test isolation, one must consider having a dedicated machine for managing volume instead.
 One can also try to run the same benchmark, without using volumes.
 But as Phase 3 shown that better performance can be achieved by attaching volumes to the virtual machines, it seems logical to test isolation with volume also.
 

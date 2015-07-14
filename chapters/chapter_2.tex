@@ -260,13 +260,26 @@ To create and run virtual machines, the open source hypervisor Kernel-based Virt
 
 
 \paragraph{Virtual machines}\mbox{}\\
+% The virtual machines are created on \texttt{compute1} and \texttt{compute2} nodes only are running a cloud image\footnote{Ubuntu cloud images can be found here: \url{https://cloud-images.ubuntu.com}} of Ubuntu Server 14.04 LTS prepared to run on cloud platforms like OpenStack. 
+% A new flavor called \textit{physical} has been created and the flavor \textit{large} has been modified accordingly.\rp{tell why you need to create and modify flavors.}
+% The updated list of flavors is now represented on Table \ref{table:flavors_list_2}. 
+% For the experiments, only \textit{large} and \textit{physical} flavors were used. 
+% With the \textit{physical} flavor, we try to have similar characteristics to a physical machine in order to compare them. 
+% In this context, only one virtual machine with \textit{physical} flavor will be running at a time. 
+% With the \textit{large} flavor, we try to have half of characteristics of a physical machine in order to have enough resources to run two virtual machines at the same time to benchmark application isolation.
 The virtual machines are created on \texttt{compute1} and \texttt{compute2} nodes only are running a cloud image\footnote{Ubuntu cloud images can be found here: \url{https://cloud-images.ubuntu.com}} of Ubuntu Server 14.04 LTS prepared to run on cloud platforms like OpenStack. 
-A new flavor called \textit{physical} has been created and the flavor \textit{large} has been modified accordingly.\rp{tell why you need to create and modify flavors.}
+
+As the goal of this bachelor work is to evaluate the performance of OpenStack and compare it to the performance of the physical machines, we need new flavors that will reflect the characteristics of the physical machines.
+Thus, a flavor called \textit{physical} has been created with the following values: 7 VCPUs and 13 GB of RAM.
+These values are willingly a bit lower to the one observed on physical machines (8 VCPUs and 16 GB of RAM).
+Indeed, as we want the virtual machine to use the same resources of a physical machine, the values of VCPUs and RAM should be lower in order for the instance to fit on one (which has already some resources used by running processes) without degrading the instance performance.
+So, the \textit{physical} flavor is supposed to represent a (virtual) machine as powerful as a physical machine.
+
+The \textit{m1.large} flavor (or simply \textit{large} flavor) is also relevant for the experiment as it represents half the power of a physical machine, so we can see how the number of VCPUs and the size of RAM can influence the performance results. 
+It will also be useful to run two virtual machines at the same time to test isolation.
+The disk size of this flavor has been updated to 30 GB to match the one set for the \textit{physical} flavor. 
 The updated list of flavors is now represented on Table \ref{table:flavors_list_2}. 
-For the experiments, only \textit{large} and \textit{physical} flavors were used. 
-With the \textit{physical} flavor, we try to have similar characteristics to a physical machine in order to compare them. 
-In this context, only one virtual machine with \textit{physical} flavor will be running at a time. 
-With the \textit{large} flavor, we try to have half of characteristics of a physical machine in order to have enough resources to run two virtual machines at the same time to benchmark application isolation.
+Only \textit{large} and \textit{physical} flavors will be used to the experiment.
 
 \begin{table}[h]
 	\centering
@@ -279,6 +292,7 @@ With the \textit{large} flavor, we try to have half of characteristics of a phys
 		m1.medium & 2 & 40 & 4096 \\
 		m1.large & 4 & 30 & 8192 \\
 		physical & 7 & 30 & 13312 \\
+		m1.xlarge & 8 & 160 & 16384 \\
 		\hline
 	\end{tabular}
 	\caption{Flavors}
@@ -309,7 +323,7 @@ Moreover all the different OS images are stored on it.
 A web interface makes OpenStack easier to use, and for that Horizon is also installed on the controller node.
 %, letting one access OpenStack with the following link \url{http://diufpc117.unifr.ch/horizon}\footnote{Access restricted to unifr network}. 
 An overview of the dashboard is shown in Figure \ref{fig:dashboard}. 
-It offers access to each service installed, and, as an administrator, it is possible to manage everything. 
+It offers access to each service installed and, as an administrator, it is possible to manage them. 
 To create, edit or delete an instance, a volume or an image, the user have to access these services through the \textit{Project} tab.
 %
 \begin{figure}[h]

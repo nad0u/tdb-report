@@ -4,8 +4,7 @@
 
 \chapter{Experiments}
 This chapter presents the practical part of the bachelor work.
-% First, a general description of how the experiment organization is presented. TODO
-
+First, a general description of the course of the experiment will be presented.
 Then, the choice of the different machines will be discussed in Section \ref{sec:preliminary}.
 For this choice, different little benchmarks have been used, which will be discussed.
 Then, the configuration of the different physical and virtual machines will be presented in details, in order for these experiments to be reproducible.
@@ -42,6 +41,7 @@ Based on their results, a reference machine will be chosen and the experiments w
 
 
 \subsection{HDPARM Benchmark}
+\label{sec:hdparm}
 %%--------------- begin: HDPARM
 \textit{Hdparm} is a command line program on Linux systems and offers a great number of parameters that let one test the hardware of a machine in details. 
 It should be noted that the use of some parameters can damage a computer and therefore they have not been used for this experiment. 
@@ -61,7 +61,7 @@ In order to issue these commands, one must be root or use the command with \text
 }
 
 The options \texttt{-Tt} instruct to benchmark the reading speed of the HDD and the reading speed of the memory (RAM) without accessing the HDD. 
-The result returned by the benchmark is the reading average speed expressed in MB/s. 
+The result returned by the benchmark is the average reading speed expressed in MB/s. 
 The value returned by the option \texttt{T} is \textit{Timing cached reads} and measures the reading speed of the RAM and swap in case the memory is full. 
 The value returned by the option \texttt{t} is \textit{Timing buffered disk reads} and measures the reading speed of the HDD in the specified partition.
 The commands in Listing \ref{lst:lst_hdparm} were run six times and the average results are presented in Table \ref{table:hdparm_res_PM} for the physical machines. 
@@ -70,26 +70,22 @@ Based on the presented results, \texttt{compute2} shows the best performance reg
 Thereby, this machine was chosen as a compute node and block storage node for OpenStack.
 Thus, \texttt{compute2} is the reference machine with which benchmark results will be compared to.
 The \texttt{compute1} machine was chosen as a compute node, as it has the highest value regarding the cached reads.
-The \texttt{machine4} is not part of the experiments, even if it was a potential candidate from the results obtained in Table \ref{table:hdparm_res_PM}.
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{|m{6cm}|m{2.5cm}|m{2.5cm}|m{2.5cm}|}
+	\begin{tabular}{|m{6cm}|m{2.5cm}|m{2.5cm}|}
 		\hline
 		& 
 		\texttt{compute1} & %vm116
-		\texttt{compute2} & %vm115
-		\texttt{machine4} \\
+		\texttt{compute2} \\ %vm115
 		\hline
 		\textbf{Buffered disk reads (MB/s)} & 
 		120.65 & 
-		134.06 & 
-		124.86 \\
+		134.06 \\
 		\hline
 		\textbf{Cached reads (MB/s)} &  
 		15428.67 & 
-		15327.23 & 
-		15408.54 \\
+		15327.23 \\
 		\hline
 	\end{tabular}
 	\caption{hdparm results for physical machines}
@@ -149,7 +145,7 @@ The results are presented in Table \ref{table:hdparm_res_VM} for the virtual mac
 The results obtained with virtual machines are quite interesting.
 Indeed, better results regarding HDD are obtained for \texttt{vm1} hosted on the less performant machine \texttt{compute1}, whereas poorer results are obtained for \texttt{vm2}.
 The fact is that this benchmark is run on a short period of time (2-3 seconds) and 
-it's difficult to evaluate hard disk and memory performance as they are always used by the system (some running processes can affect the results). 
+it is difficult to evaluate hard disk and memory performance as they are always used by the system (some running processes can affect the results). 
 Other runs showed lower performance results (around 105 MB/s) for \texttt{vm1} for example.
 So, we can assume that both virtual machines (\texttt{vm1} and \texttt{vm2}) have quite similar performance and thus we expect to have quite similar results between them after running OLTP-Bench.
 More interesting results are shown with values followed by a star (*). 
@@ -170,7 +166,7 @@ As we were only interested in the first outputs of Bandwidth, we did not run sys
 	\singlespacing
     \fontsize{10pt}{12pt}\selectfont
 \begin{verbatim}
-	$ sudo nice -n -2 ./bandwidth64
+    $ sudo nice -n -2 ./bandwidth64
     ...
     Sequential read (64-bit LODSQ), size = 128 B, loops = 241172480, 5879.4 MB/s
     Sequential read (64-bit LODSQ), size = 256 B, loops = 174587904, 8523.1 MB/s
@@ -191,8 +187,10 @@ As it was expected, the performance does not change too much and tend to stay th
 
 \subsection{OLTP-Bench configuration}
 Now that we have our machines, we can begin to run OLTP-Bench on it. 
-Before running the tests, the database has to be filled up with the different scale factor: 1, 16, 32, 64, 74, 84, 94, 104. 
-To do this we must first create the appropriate databases: tpcc\_1, tpcc\_16\_ tpcc\_32, tpcc\_64, tpcc\_74, tpcc\_84, tpcc\_94, tpcc\_104. 
+Before running the tests, the database has to be filled up with data generated by OLTP-Bench. 
+The amount of data produced depends on the scale factor parameter.
+For the experiment we will be using these different scale factor values: 1, 16, 32, 64, 74, 84, 94, 104. 
+But first, we must create the appropriate databases: tpcc\_1, tpcc\_16\_ tpcc\_32, tpcc\_64, tpcc\_74, tpcc\_84, tpcc\_94, tpcc\_104. 
 Then we can issue the command in Listing \ref{lst:lst_cmd_oltpbenchmark} from the terminal to fill up the databases.
 
 {
@@ -278,7 +276,7 @@ As a side note, this script will not create folder to store the results, they ha
 %%---------------
 \section{Software}
 \label{sec:softwares}
-The actual software and their configuration used in order to run the benchmark are presented in this section.
+The actual software and its configuration used in order to run the benchmark are presented in this section.
 
 To run the benchmark we will be using the OLTP-Bench project, which can be cloned 
 % (see Listing \ref{lst:lst_cmd_oltpb_cloning}) 
@@ -336,7 +334,7 @@ Afterwards, we are ready to start benchmarking. The different benchmarks are des
 %%--------------- section
 %%---------------
 \section{Phase 1 - Physical machine}
-In order to have a point of comparison, the OLTP-Bench programm will be executed on the physical machine that performs the best regarding \texttt{hdparm} results, namely \texttt{compute2}.
+In order to have a point of comparison, the OLTP-Bench programm will be executed on the physical machine that performs the best regarding hdparm results, namely \texttt{compute2}.
 Before running the tests, we will fill up the database with the different scale factors: 1, 16, 32, 64, 74, 84, 94, 104 (see Listing \ref{lst:lst_cmd_oltpbenchmark}). 
 The size of each filled database is shown in Table \ref{table:tab_oltpb_scalefactor}.
 
@@ -369,6 +367,7 @@ The size of each filled database is shown in Table \ref{table:tab_oltpb_scalefac
 	\label{table:tab_oltpb_scalefactor}
 \end{table}
 
+% TODO: reformulate
 Once the databases populated, we can run the benchmarks by using the \texttt{oltpbench-run} script. 
 In order to maximize performance, all the OpenStack services will be shut down during the tests. 
 Moreover, the machines will be rebooted after each scale factor test. 
@@ -416,6 +415,7 @@ This way, it will be easy to destroy and create a new virtual machine with a dif
 
 For this phase, OLTP-Bench was run on two different virtual machines with different flavors, \texttt{vm2} \textit{large} and \texttt{vm2} \textit{physical}. 
 For the virtual machine with \textit{large} flavor, OLTP-Bench was run with two different values for the terminals parameter: 1 and 40.
+% TODO: explain why only 40T
 In the case of the physical flavor, OLTP-Bench was run only with 40 terminals.
 Another thing to take care before running the benchmark on any \textit{large} flavor virtual machine: it is important to change the buffer pool size in the \texttt{mysql\_start} script. 
 Otherwise, this will produce an error as the buffer pool is as big as the RAM on the virtual machine.
@@ -454,7 +454,7 @@ The crash begins after 450 seconds and lasts 150 seconds approximately.
 \end{figure}
 
 Concerning the results obtained with 1 terminal, we can see that they are quite constant.
-It can be interesting to run the same benchmark with different values for the number of terminals in order to see where we have better performance.
+%It can be interesting to run the same benchmark with different values for the number of terminals in order to see where we have better performance.
 
 Finally, one can observe that in general, better performances are achieved on \texttt{compute2} with a peak at 400 req/s for scale factor 1.
 So, for now, OpenStack does not seem to beat the performance of a physical machine.
@@ -515,7 +515,7 @@ Now, we are ready to benchmark OpenStack using attached volumes to virtual machi
 \end{lstlisting}
 }
 
-For this part of the experiment, we wanted to see if the use of volumes attached to virtual machines can affect the performance, as it was observed when running \texttt{hdparm}. 
+For this part of the experiment, we wanted to see if the use of volumes attached to virtual machines can affect the performance, as it was observed when running hdparm. 
 In particular, we want to see what happens when we have both the virtual machine and the volume hosted on the same physical machine (on \texttt{compute2} in our case) and when we have a virtual machine hosted on \texttt{compute1} and the volume hosted on \texttt{compute2}.
 
 \begin{figure}[h]
@@ -607,7 +607,7 @@ Indeed, almost all throughput lie below 200 req/s, which is clearly worse than a
 This can be explained by the fact that we do not have a dedicated machine for managing the volumes, a Block Storage node, in our OpenStack architecture.
 This means that the two virtual machines try to access the same physical hard drive (where the database resides) during the benchmark, even if there are two logical volumes.
 
-In order to better test isolation, one must consider having a dedicated machine for managing volume instead.
-One can also try to run the same benchmark, without using volumes.
-But as Phase 3 shown that better performance can be achieved by attaching volumes to the virtual machines, it seems logical to test isolation with volume also.
+% In order to better test isolation, one must consider having a dedicated machine for managing volume instead.
+% One can also try to run the same benchmark, without using volumes.
+% But as Phase 3 shown that better performance can be achieved by attaching volumes to the virtual machines, it seems logical to test isolation with volume also.
 

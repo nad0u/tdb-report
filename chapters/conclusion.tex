@@ -60,9 +60,12 @@ We finally decided to use the values presented in the Listing \ref{lst:lst_oltp_
 With the different tests performed, we obtained quite useful insights regarding the OpenStack performance.
 Below there are some other suggestions that could be used to obtain more meaningful results.
 
-First, as it has been shown in Phase 4, it could be more interesting to use a machine dedicated to volume management.
+First, as it has been shown in Phase 4, it could be more interesting to use a machine dedicated to volume management in order to test isolation.
 Better performance results might be observed.
-Then, other tests can be performed by increasing the duration of a run. 
+One can also try to run the same benchmark as in Phase 4, without using volumes.
+But as Phase 3 shown that better performance can be achieved by attaching volumes to the virtual machines, it seems logical to test isolation with volume also.
+
+Then, other tests (for all Phases) can be performed by increasing the duration of a run. 
 It could be better to extend the duration to 40 minutes for example.
 Also, different number of terminals (20 and 80) can be used to see their impact on the performance.
 

@@ -282,7 +282,7 @@ The actual software and its configuration used in order to run the benchmark are
 To run the benchmark we will be using the OLTP-Bench project, which can be cloned 
 % (see Listing \ref{lst:lst_cmd_oltpb_cloning}) 
 or downloaded from GitHub if Git is not installed on the system. 
-OLTP-Bench is written in Java and need several sotfware to be installed in order to work (see Listing \ref{lst:lst_cmd_others_install}): 
+OLTP-Bench is written in Java and need several software to be installed in order to work (see Listing \ref{lst:lst_cmd_others_install}): 
 
 {
 \singlespacing
@@ -370,7 +370,7 @@ The size of each filled database is shown in Table \ref{table:tab_oltpb_scalefac
 
 Once the databases populated, we can run the benchmarks by using the \texttt{oltpbench-run} script. 
 In order to maximize performance, all the OpenStack services will be shut down during the tests. 
-One test consists in two runs of the benchmark (each run lasts 1800 seconds) for a specified scale factor, thus eigth tests in total are performed for this phase.
+One test consists in two runs of the benchmark (each run lasts 1800 seconds) for a specified scale factor, thus eight tests in total are performed for this phase.
 The terminal parameter is fixed to 40, meaning that the benchmark is simulating 40 users interacting with the system.
 Moreover, the machine will be rebooted between each test. 
 It has to be noted that after each run, the database size presented in Table \ref{table:tab_oltpb_scalefactor} will get larger, because the TPC-C is a write intensive test (e.g. new entries are added when a new order is coming in the system). 
@@ -384,7 +384,7 @@ Despite this, the databases will not be refilled between each test.
 \end{figure}
 
 As it can be seen in Figure \ref{fig:ph115_t40}, as the scale factor increases the throughput decreases. 
-This behaviour is normal, as with a larger scale factor the database becomes bigger, and thus there is a lot more data to process and this will reduce the throughput of the system. 
+This behavior is normal, as with a larger scale factor the database becomes bigger, and thus there is a lot more data to process and this will reduce the throughput of the system. 
 For scale factor 84, we can see a little drop in the throughput. 
 
 The throughput represented in the graph is computed by taking the 3600 throughput values ($2\times1800$ output values) of the OLTP-Bench output and calculating the first quartile $Q1$ and the third quartile $Q3$. 
@@ -414,9 +414,10 @@ These snapshots are named \textit{snap\_trusty\_16-74\_oltpsh\_} and \textit{sna
 This way, it will be easy to destroy and create a new virtual machine with a different flavor and have the populated database ready to be used.
 
 For this phase, OLTP-Bench was run on two different virtual machines with different flavors, \texttt{vm2} \textit{large} and \texttt{vm2} \textit{physical}. 
-For the virtual machine with \textit{large} flavor, OLTP-Bench was run with two different values for the terminals parameter: 1 and 40.
-% TODO: explain why only 40T
-In the case of the physical flavor, OLTP-Bench was run only with 40 terminals.
+As in the Phase 1, the tests are run with the terminals parameter set to 40.
+Additional tests with the terminals parameter set to 1 are performed on \texttt{vm2} \textit{large} only.
+It is expected to obtain a constant performance with this parameter as there is only one simulated user interacting with the system.
+If it is not the case, this means that there is a problem regarding either hardware or software.
 Another thing to take care before running the benchmark on any \textit{large} flavor virtual machine: it is important to change the buffer pool size in the \texttt{mysql\_start} script. 
 Otherwise, this will produce an error as the buffer pool is as big as the RAM on the virtual machine.
 The new value is set to 6G instead of 8G: \texttt{--innodb-buffer-pool-size=6G}.
@@ -441,7 +442,7 @@ The new value is set to 6G instead of 8G: \texttt{--innodb-buffer-pool-size=6G}.
 As it can be seen in Figure \ref{fig:vm115_large_wobs} and \ref{fig:vm115_physical_wobs}, the throughputs with 40 terminals are quite similar between the \textit{large} and \textit{physical} flavors. 
 However, with scale factor 16, we observe a greater throughput loss with the \textit{physical} flavor compared to the \textit{large} flavor. 
 Also, like with the results on \texttt{compute2}, we observe again a drop at scale factor 84, especially with the \textit{physical} flavor. 
-It seems to be a coincidence, because an analysis of the data (plotting througput over time in seconds) shows that the benchmark crashes at some point (i.e. there is 0 values for quite some time).
+It seems to be a coincidence, because an analysis of the data (plotting throughput over time in seconds) shows that the benchmark crashes at some point (i.e. there is 0 values for quite some time).
 This behavior appears quite frequently over all the different runs made, but in some case, like with scale factor 84, it has a greater impact.
 An example of such a crash is shown in Figure \ref{fig:vm115_physical_wobs_crash} (blue corresponds to the first run and red to the second run).
 The crash begins after 450 seconds and lasts 150 seconds approximately.
@@ -548,7 +549,7 @@ Finally, as to be expected, the results for 1 terminal are constant and there is
 Now, comparing \texttt{vm2bs} and \texttt{vm1bs} results, we see that we obtain slightly better performance results for \texttt{vm2bs}, especially for scale factors 16 and 32. 
 So one can say that having an attached volume hosted on the same physical machine as the virtual machine potentially increases the performance in the case of \textit{large} flavor.
 
-For the case of \textit{physical} flavor, one can observe a similar shape as we had in Figures \ref{fig:vm115_large_wbs} and \ref{fig:vm116_large_wbs}, except that the throuhput drops rapidly under 300 req/s for scale factor 32.
+For the case of \textit{physical} flavor, one can observe a similar shape as we had in Figures \ref{fig:vm115_large_wbs} and \ref{fig:vm116_large_wbs}, except that the throughput drops rapidly under 300 req/s for scale factor 32.
 And as expected, the performance is way better than what was obtained in Phase 2 (see Figure \ref{fig:vm115_large_wobs}). 
 Indeed, throughputs are always above 200 req/s.
 
@@ -586,7 +587,7 @@ Indeed, when several virtual machines are hosted on the same physical machine, t
 Testing isolation allows us to verify that a virtual machine is not interfering (or not interfering too much) with another virtual machine running on the same host. 
 It must also be the case when two virtual machines are running on two different hosts. 
 Thus, a good isolation allows to keep individual performance of each virtual machine more or less intact.
-The isolation is particularily important in \textit{Cloud Computing} as each hardware resource can be rented on demand. 
+The isolation is particularly important in \textit{Cloud Computing} as each hardware resource can be rented on demand. 
 The customer that rented a virtual machine expects it to run at full power (the power he paid for), and so other virtual machines should not interfere with the rented one.
 
 \begin{figure}[h]
